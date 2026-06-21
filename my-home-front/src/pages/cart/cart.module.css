@@ -1,0 +1,63 @@
+
+.containerTable {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px 0;
+}
+
+.containerCart {
+  margin-bottom: 50px;
+}
+
+.rowCart {
+  display: grid;
+  grid-template-columns: 5fr 1fr 1fr 1fr;
+  background-color: #fff;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0 10px 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.topCart {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 10px 0;
+}
+
+.img {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.img img {
+  justify-self: center;
+}
+
+.btnClean {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  padding: 10px;
+  border-radius: 20px;
+  color: #BDFFD0;
+  background-color: #4ECB71;
+  border: none;
+  cursor: pointer;
+}
+
+.topCart span {
+  color: #4ECB71;
+}
+
+.rowCart span {
+  color: #00641C;
+}

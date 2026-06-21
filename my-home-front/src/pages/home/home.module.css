@@ -1,0 +1,93 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    justify-items: center;
+    background-color: #FFFAF8;
+}
+
+.subContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    background-color: #FFFAF8;
+    width: auto;
+    height: 200px;
+}
+
+.loginInput {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-columns: minmax(100px, 240px);
+    grid-gap: 3px;
+    justify-content: center;
+    justify-items: center;
+
+}
+
+.loginInput input {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: 900;
+    color: #c15111;
+    letter-spacing: 5px;
+
+    background: linear-gradient(180deg, #FFEEE4 0%, rgba(255, 249, 245, 0) 100%); 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+    border-radius: 5px; border: 1px #FF9A62 solid;
+    
+}
+
+.loginInput label {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #038929;
+}
+
+.loginInput span{
+    font-size: 0.8rem;
+    color: #038929;
+    text-align: center;
+    margin-top: 5px; 
+}
+
+.loginInput input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.loginInput input::placeholder {
+    color: #f9ab84;
+    font-size: 0.6rem;
+}
+
+.container p {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #FFDED3;
+
+}
+
+.loginInput input:focus {
+    outline: none;
+    border: 2px solid #FF9A62;
+}
+
+.error {
+    height: 10px;
+}
+
+.error p {
+    height: 20px;
+    color: red;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 2px;
+}

@@ -1,0 +1,53 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+.flexContainer{
+    display: flex;
+    height: 50px;
+}
+
+.flexContainer input {
+    flex-grow: 2;
+    max-width: 120px;
+    border-radius: 5px 0 0 5px;
+    background-color: #FFF6F1;
+    border: 1px solid #FF9A62;
+    text-align: center;
+    color: #c15111;
+}
+
+.flexContainer input:focus {
+    outline: none;
+    border: 2px solid #FF9A62;
+}
+
+.flexContainer input::placeholder {
+    color:    #c15111;
+
+}
+
+.flexContainer input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+.flexContainer button {
+    flex-grow: 1;
+    border-radius: 0 5px 5px 0;
+    background-color: #4ECB71;
+    color: #BDFFD0;
+    cursor: pointer;
+    border: none;
+}
+
+.description {
+    font-size: 12px;
+    color: #FF9A62;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    
+}
