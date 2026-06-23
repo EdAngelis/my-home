@@ -1,5 +1,6 @@
 type Environments = {
   db_uri: string;
+  serverless: string;
 };
 
 type Config = {
@@ -11,9 +12,11 @@ const config = {
   development: {
     db_uri:
       "mongodb://localhost:27017/",
+    serverless: process.env.SERVERLESS || "false",
   },
   production: {
     db_uri: process.env.DB_URI as string,
+    serverless: process.env.SERVERLESS || "false",
   },
 };
 

@@ -5,7 +5,7 @@ import { chalkInfo, chalkSuccess } from "./tools/chalk";
 import { uriInspec } from "./utils";
 
 const connect = async () => {
-  mongoose.connect("mongodb+srv://ed4ngelis:ruZLG0lCffpmze9A@cluster0.l90zluj.mongodb.net/my-home?retryWrites=true&w=majority", {});
+  mongoose.connect(config.db_uri, {});
 
   mongoose.connection.on("connected", () => {
     const { source, dataBaseName } = uriInspec(config.db_uri!);

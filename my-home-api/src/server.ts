@@ -1,16 +1,26 @@
 import { chalkError, chalkSuccess } from "./tools/chalk";
 import connect from "./db";
 import logger from "./tools/winston";
+import serverless from "serverless-http";
 
 import app from "./app";
+import config from "./config/config";
 
 connect();
 
-const port = process.env.PORT || 3000;
+export const handler = serverless(app);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${chalkSuccess(port)}`);
-});
+if (config.serverless !== "true") {
+  const port = process.env.PORT || 3000;
+
+  const server = app.listen(port, () => {
+    console.log(`Server running on port ${chalkSuccess(port)}`);
+  });
+
+  server.on("error", (err) => {
+    console.log(chalkError("Server error:", err));
+  });
+}
 
 process.on("unhandledRejection", (reason, promise) => {
   console.log(
@@ -19,10 +29,6 @@ process.on("unhandledRejection", (reason, promise) => {
   // Application specific logging, throwing an error, or other logic here
 });
 
-app.on("error", (err) => {
-  console.log(chalkError("Express error:", err));
-  // Application specific logging, throwing an error, or other logic here
-});
 process.on("uncaughtException", (err) => {
   console.log(chalkError("Uncaught Exception:", err));
   // Application specific logging, throwing an error, or other logic here

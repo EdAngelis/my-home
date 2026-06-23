@@ -1,0 +1,47 @@
+@baseUrl =  https://1bs08vxx5e.execute-api.us-east-1.amazonaws.com
+@buyerId = 12345678900
+
+### Find a buyer by CPF (used as the "sign in" check)
+GET {{baseUrl}}/buyers/signIn?cpf=12345678900
+
+### Create many buyers at once
+GET {{baseUrl}}/buyers/create-many
+Content-Type: application/json
+
+[
+  { "cpf": "11111111111" },
+  { "cpf": "22222222222" }
+]
+
+### Create a new buyer (sign up / find-or-create on the frontend)
+POST {{baseUrl}}/buyers
+Content-Type: application/json
+
+{
+  "cpf": "12345678900"
+}
+
+### Get a single buyer by id (cart.items.product populated)
+GET {{baseUrl}}/buyers/{{buyerId}}
+
+### Update a single buyer by id (e.g. persist cart changes)
+PATCH {{baseUrl}}/buyers/{{buyerId}}
+Content-Type: application/json
+
+{
+  "marketPhone": "5511999999999"
+}
+
+### Bulk update buyers matching a query
+PATCH {{baseUrl}}/buyers?marketPhone=
+Content-Type: application/json
+
+{
+  "marketPhone": "5511999999999"
+}
+
+### Delete a single buyer by id
+DELETE {{baseUrl}}/buyers/{{buyerId}}
+
+### Bulk delete buyers matching a query
+DELETE {{baseUrl}}/buyers?cpf=12345678900

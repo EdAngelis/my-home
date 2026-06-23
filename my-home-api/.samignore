@@ -1,0 +1,11 @@
+src
+*.md
+.env
+.env.*
+json.json
+kaban.md
+.git
+.vscode
+.serverless
+serverless.yml
+samconfig.toml
