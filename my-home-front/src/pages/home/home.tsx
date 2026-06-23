@@ -12,12 +12,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  let { setUserId } = useContext(AppContext);
+  let { userId, setUserId } = useContext(AppContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setUserId("");
+    if (userId) navigate("/products");
   }, []);
 
   const hLogin = async (event: any) => {
@@ -31,11 +31,17 @@ export default function Home() {
         if (message === "Buyer not found") {
           const newBuyer: IBuyer = { cpf };
           const resp = await createBuyer(newBuyer);
-          resp.status === 200
-            ? setUserId(resp.data.data._id)
-            : console.log("Show Alerta");
+          if (resp.status === 200) {
+            const id = resp.data.data._id;
+            setUserId(id);
+            localStorage.setItem("buyerId", id);
+          } else {
+            console.log("Show Alerta");
+          }
         } else {
-          setUserId(resp.data._id);
+          const id = resp.data._id;
+          setUserId(id);
+          localStorage.setItem("buyerId", id);
         }
         navigate("/products");
       } catch (error) {

@@ -4,16 +4,23 @@ import { AppContext } from "../../context";
 import styles from "./menu.module.css";
 
 export default function Menu() {
-  const { qtItemCart, userId } = useContext(AppContext);
+  const { qtItemCart, userId, setUserId } = useContext(AppContext);
   const [tabName, setTabName] = useState("Home");
 
   useEffect(() => {
     userId === "" ? setTabName("Home") : setTabName("Logout");
   }, [userId]);
+
+  const hLogout = () => {
+    if (userId === "") return;
+    setUserId("");
+    localStorage.removeItem("buyerId");
+  };
+
   return (
     <div className={styles.container}>
       <nav className={styles.navBar}>
-        <Link className={styles.li} to="/">
+        <Link className={styles.li} to="/" onClick={hLogout}>
           {tabName}
         </Link>
 
