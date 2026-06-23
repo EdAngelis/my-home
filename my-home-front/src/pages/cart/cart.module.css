@@ -11,7 +11,7 @@
 
 .rowCart {
   display: grid;
-  grid-template-columns: 5fr 1fr 1fr 1fr;
+  grid-template-columns: 3fr 2fr 1fr 1fr 1fr;
   background-color: #fff;
   align-items: center;
   gap: 10px;
