@@ -8,6 +8,7 @@ import styles from "./cart.module.css";
 import { getBuyer, updateCart, sendWhatsapp } from "../../app.service";
 import InputButton from "../../components/input-button/input-button";
 import Alert from "../../components/alert/alert";
+import { formatPrice } from "../../components/formatters";
 
 export default function Cart() {
   const [buyer, setBuyer] = useState<IBuyer>();
@@ -98,6 +99,7 @@ export default function Cart() {
             ? buyer.cart.items.map((item, index) => (
                 <div className={styles.rowCart} key={index}>
                   <span> {item?.product?.name ?? "-"}</span>
+                  <span>{formatPrice(item.qt * item.product.price)}</span>
                   <div
                     onClick={() => editQuantity(item.product, -1)}
                     className={styles.img}
