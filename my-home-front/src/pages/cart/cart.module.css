@@ -61,3 +61,7 @@
 .rowCart span {
   color: #00641C;
 }
+
+.productName {
+  cursor: pointer;
+}
