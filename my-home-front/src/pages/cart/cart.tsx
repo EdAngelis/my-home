@@ -9,7 +9,6 @@ import styles from "./cart.module.css";
 import { getBuyer, updateCart, sendWhatsapp } from "../../app.service";
 import InputButton from "../../components/input-button/input-button";
 import Alert from "../../components/alert/alert";
-import { formatPrice } from "../../components/formatters";
 
 export default function Cart() {
   const navigate = useNavigate();
