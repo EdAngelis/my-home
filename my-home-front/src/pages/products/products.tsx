@@ -76,6 +76,10 @@ export default function Products() {
     }
   };
 
+  const isInCart = (product: IProducts) =>
+    buyer?.cart?.items?.some((item) => item.product._id === product._id) ??
+    false;
+
   const handleFilter = (event: any) => {
     const value = event.target.value;
     const temp = products.filter((product) =>
@@ -110,13 +114,39 @@ export default function Products() {
           checked={true}
           onChange={(checked) => setUserProductsOnly(checked)}
         />
-        {filteredProducts.map((product, index) => {
-          return userProductsOnly ? (
-            product.createdByUserId === userId && (
+        {filteredProducts
+          .filter((product) => !isInCart(product))
+          .map((product, index) => {
+            return userProductsOnly ? (
+              product.createdByUserId === userId && (
+                <div className={styles.row} key={index}>
+                  <div className={styles.trashIconDiv}>
+                    <div onClick={() => deleteProd(product._id)}>
+                      {product.createdByUserId === userId && (
+                        <TrashIcon color1="#00641C" color2="#D1FFCD" />
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => goTo("/create-product", product)}
+                    className={styles.cardProduct}
+                  >
+                    <span className={styles.product}>{product.name}</span>
+                    <span className={styles.badge}>{product.badge}</span>
+                    <span className={styles.price}>
+                      {formatPrice(product.price)}
+                    </span>
+                  </div>
+                  <div onClick={() => addItemToCart(product)}>
+                    <CartIcon color1="#FF9A62" color2="#D1FFCD" />
+                  </div>
+                </div>
+              )
+            ) : (
               <div className={styles.row} key={index}>
                 <div className={styles.trashIconDiv}>
                   <div onClick={() => deleteProd(product._id)}>
-                    {product.createdByUserId === userId && (
+                    {product.createdByUserId !== userId && (
                       <TrashIcon color1="#00641C" color2="#D1FFCD" />
                     )}
                   </div>
@@ -135,32 +165,8 @@ export default function Products() {
                   <CartIcon color1="#FF9A62" color2="#D1FFCD" />
                 </div>
               </div>
-            )
-          ) : (
-            <div className={styles.row} key={index}>
-              <div className={styles.trashIconDiv}>
-                <div onClick={() => deleteProd(product._id)}>
-                  {product.createdByUserId !== userId && (
-                    <TrashIcon color1="#00641C" color2="#D1FFCD" />
-                  )}
-                </div>
-              </div>
-              <div
-                onClick={() => goTo("/create-product", product)}
-                className={styles.cardProduct}
-              >
-                <span className={styles.product}>{product.name}</span>
-                <span className={styles.badge}>{product.badge}</span>
-                <span className={styles.price}>
-                  {formatPrice(product.price)}
-                </span>
-              </div>
-              <div onClick={() => addItemToCart(product)}>
-                <CartIcon color1="#FF9A62" color2="#D1FFCD" />
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </>
   );
