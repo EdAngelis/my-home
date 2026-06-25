@@ -3,7 +3,9 @@ import { createContext, useState } from "react";
 export const AppContext = createContext<any>(null);
 
 export function AppProvider({ children }: any) {
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string>(
+    () => localStorage.getItem("buyerId") || ""
+  );
   const [qtItemCart, setQtItemCart] = useState<number>(0);
   return (
     <AppContext.Provider

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import IBuyer from "../../models/buyer.model";
 import IProducts from "../../models/products.model";
 import { dim, plus } from "../../assets/icons/icons";
@@ -10,6 +11,7 @@ import InputButton from "../../components/input-button/input-button";
 import Alert from "../../components/alert/alert";
 
 export default function Cart() {
+  const navigate = useNavigate();
   const [buyer, setBuyer] = useState<IBuyer>();
   const [total, setTotal] = useState<string>("0.00");
   const [alertOn, setAlertOn] = useState<boolean>(false);
@@ -77,6 +79,10 @@ export default function Cart() {
     setAlertOn(true);
   };
 
+  const goTo = (path: string, params: any) => {
+    navigate(path, { state: params });
+  };
+
   return (
     <>
       <Alert alertOn={alertOn} setAlertOn={setAlertOn} />
@@ -97,7 +103,12 @@ export default function Cart() {
           {buyer?.cart?.items
             ? buyer.cart.items.map((item, index) => (
                 <div className={styles.rowCart} key={index}>
-                  <span> {item?.product?.name ?? "-"}</span>
+                  <span
+                    className={styles.productName}
+                    onClick={() => goTo("/create-product", item.product)}
+                  >
+                    {item?.product?.name ?? "-"}
+                  </span>
                   <div
                     onClick={() => editQuantity(item.product, -1)}
                     className={styles.img}
