@@ -15,6 +15,8 @@ export default function Cart() {
   const [buyer, setBuyer] = useState<IBuyer>();
   const [total, setTotal] = useState<string>("0.00");
   const [alertOn, setAlertOn] = useState<boolean>(false);
+  const [phoneEditing, setPhoneEditing] = useState<boolean>(false);
+  const [phoneInput, setPhoneInput] = useState<string>("");
 
   const { userId, setQtItemCart } = useContext(AppContext);
 
@@ -76,6 +78,7 @@ export default function Cart() {
   const onPhoneChange = async (e: any) => {
     buyer!.marketPhone = e;
     await hUpdateBuyer(buyer!);
+    setPhoneEditing(false);
     setAlertOn(true);
   };
 
@@ -91,10 +94,20 @@ export default function Cart() {
           <span>Total: {total}</span>
           <InputButton
             type="number"
-            label="Send"
-            value="Send Order"
+            label={phoneEditing ? "Save" : "Send"}
+            value={phoneEditing ? "Save" : "Send Order"}
             description="Digite e tecle enter para salvar o telefone"
-            onClick={() => (buyer ? sendWhatsapp(buyer) : null)}
+            onClick={() =>
+              phoneEditing
+                ? onPhoneChange(phoneInput)
+                : buyer
+                ? sendWhatsapp(buyer)
+                : null
+            }
+            onInputChange={(v) => {
+              setPhoneInput(v);
+              setPhoneEditing(true);
+            }}
             onKey={(e) => onPhoneChange(e)}
             placeholder={buyer?.marketPhone ? buyer.marketPhone : "Store Phone"}
           />
