@@ -96,7 +96,6 @@ export default function Cart() {
             type="number"
             label={phoneEditing ? "Save" : "Send"}
             value={phoneEditing ? "Save" : "Send Order"}
-            description="Digite e tecle enter para salvar o telefone"
             onClick={() =>
               phoneEditing
                 ? onPhoneChange(phoneInput)
