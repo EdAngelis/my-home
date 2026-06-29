@@ -1,13 +1,16 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context";
 import styles from "./menu.module.css";
 
+const MARKET_PATHS = ["/products", "/cart", "/create-product"];
+
 export default function Menu() {
-  const { setUserId } = useContext(AppContext);
+  const { qtItemCart, userId, setUserId } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -61,6 +64,33 @@ export default function Menu() {
             </div>
           )}
         </div>
+
+        {MARKET_PATHS.includes(location.pathname) && (
+          <>
+            {userId === "" ? (
+              <div className={styles.liDisabled}>PRODUTOS</div>
+            ) : (
+              <Link className={styles.li} to="/products">
+                PRODUTOS
+              </Link>
+            )}
+
+            {userId === "" ? (
+              <div className={styles.liDisabled}>CART</div>
+            ) : (
+              <Link className={`${styles.li} ${styles.liCart}`} to="/cart">
+                <div className={styles.badgeContainer}>
+                  <div className={styles.badge}>{qtItemCart}</div>
+                  <span>CART</span>
+                </div>
+              </Link>
+            )}
+          </>
+        )}
+
+        {location.pathname === "/duties" && (
+          <span className={styles.li}>TAREFAS</span>
+        )}
       </nav>
       <Outlet />
     </div>
