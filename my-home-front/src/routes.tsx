@@ -6,6 +6,8 @@ import Duties from "./pages/duties/duties";
 import CreateProduct from "./pages/products/create/create_product";
 import Home from "./pages/home/home";
 import Menu from "./components/menu/menu";
+import MarketNav from "./components/market-nav/market-nav";
+
 export interface RouteObject {
   caseSensitive?: boolean;
   children?: RouteObject[];
@@ -13,61 +15,24 @@ export interface RouteObject {
   index?: boolean;
   path?: string;
 }
+
 const routes = [
   {
     path: "/",
-    index: true,
-    element: (
-      <>
-        <Menu />
-        <Home />
-      </>
-    ),
-  },
-  {
-    path: "/home",
-    element: (
-      <>
-        <Menu />
-        <Home />
-      </>
-    ),
-  },
-  {
-    path: "/products",
-    element: (
-      <>
-        <Menu />
-        <Products />
-      </>
-    ),
-  },
-  {
-    path: "/cart",
-    element: (
-      <>
-        <Menu />
-        <Cart />
-      </>
-    ),
-  },
-  {
-    path: "/duties",
-    element: (
-      <>
-        <Menu />
-        <Duties />
-      </>
-    ),
-  },
-  {
-    path: "/create-product",
-    element: (
-      <>
-        <Menu />
-        <CreateProduct />
-      </>
-    ),
+    element: <Menu />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "home", element: <Home /> },
+      { path: "duties", element: <Duties /> },
+      {
+        element: <MarketNav />,
+        children: [
+          { path: "products", element: <Products /> },
+          { path: "cart", element: <Cart /> },
+          { path: "create-product", element: <CreateProduct /> },
+        ],
+      },
+    ],
   },
   {
     path: "*",
