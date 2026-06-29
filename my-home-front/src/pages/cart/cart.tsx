@@ -113,7 +113,14 @@ export default function Cart() {
         </div>
         <div className={styles.containerTable}>
           {buyer?.cart?.items
-            ? buyer.cart.items.map((item, index) => (
+            ? buyer.cart.items
+                .slice()
+                .sort((a, b) =>
+                  a.product.name.localeCompare(b.product.name, "pt-BR", {
+                    sensitivity: "base",
+                  })
+                )
+                .map((item, index) => (
                 <div className={styles.rowCart} key={index}>
                   <span
                     className={styles.productName}
