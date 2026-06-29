@@ -7,6 +7,7 @@ import {
   updateDuties,
   deleteDuty,
   deleteDuties,
+  markDutyAsDone,
 } from "../controller/duties.controller";
 
 const router = express.Router();
@@ -14,6 +15,7 @@ const router = express.Router();
 router.get("/", getDuties);
 router.post("/create", createDuty);
 router.get("/:id", getDuty);
+router.patch("/:id/done", markDutyAsDone);
 router.patch("/:id", updateDuty);
 router.patch("/", updateDuties);
 router.delete("/:id", deleteDuty);

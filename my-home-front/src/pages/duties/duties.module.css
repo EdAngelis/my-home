@@ -1,0 +1,131 @@
+.container {
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  color: #038929;
+  font-size: 1.2rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.btnAdd {
+  background-color: #038929;
+  color: #FFEEE4;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btnAdd:hover {
+  background-color: #025f1e;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #f8fff8;
+  border-radius: 8px;
+  border: 1px solid #b2e4bc;
+}
+
+.input {
+  border: 1px solid #FF9A62;
+  border-radius: 5px;
+  background-color: #FFF6F1;
+  color: #c15111;
+  outline: none;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+
+.input::placeholder {
+  color: #FF9A62;
+}
+
+.btnSave {
+  background-color: #FF9A62;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btnSave:hover {
+  background-color: #e07d47;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty {
+  color: #038929;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 32px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 6px;
+  padding: 12px 14px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dutyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dutyName {
+  font-weight: 700;
+  color: #00641C;
+  font-size: 1rem;
+}
+
+.dutyFreq {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.btnDone {
+  background-color: #038929;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btnDone:hover {
+  background-color: #025f1e;
+}

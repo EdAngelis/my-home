@@ -73,6 +73,19 @@ const deleteMany = async (query: any) => {
   }
 };
 
+const markAsDone = async (_id: string, maker?: string) => {
+  try {
+    const result = await Duty.findByIdAndUpdate(
+      _id,
+      { $push: { history: { $each: [{ date: new Date(), maker }], $position: 0 } } },
+      { new: true }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   findMany,
   createMany,
@@ -82,4 +95,5 @@ export {
   updateMany,
   deleteOne,
   deleteMany,
+  markAsDone,
 };

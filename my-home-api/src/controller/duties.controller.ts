@@ -8,6 +8,7 @@ import {
   updateMany,
   deleteOne,
   deleteMany,
+  markAsDone,
 } from "../repository/duties.repo";
 
 const getDuties = async (req: Request, res: Response) => {
@@ -104,6 +105,19 @@ const deleteDuties = async (req: Request, res: Response) => {
   }
 };
 
+const markDutyAsDone = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { maker } = req.body;
+  try {
+    const data = await markAsDone(id, maker);
+    if (!data) return response(res, 404, { message: "Duty not found", data });
+    return response(res, 200, { message: "Duty marked as done", data });
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, { message: "Error", data: error });
+  }
+};
+
 export {
   getDuties,
   createDuty,
@@ -112,4 +126,5 @@ export {
   updateDuties,
   deleteDuty,
   deleteDuties,
+  markDutyAsDone,
 };

@@ -79,6 +79,16 @@ const updateProduct = async (_id: string, product: IProduct) => {
   return response.data.data;
 };
 
+const createDuty = async (duty: Partial<IDuties>) => {
+  const response = await api.post("/duties/create", duty);
+  return response.data.data;
+};
+
+const markDutyDone = async (id: string, maker?: string) => {
+  const response = await api.patch(`/duties/${id}/done`, { maker });
+  return response.data.data;
+};
+
 export {
   getProducts,
   getBuyer,
@@ -90,5 +100,7 @@ export {
   createProduct,
   createBuyer,
   getBuyerByCpf,
-  updateProduct
+  updateProduct,
+  createDuty,
+  markDutyDone,
 };
