@@ -4,9 +4,58 @@
     align-items: center;
     gap: 10px;
     margin: 10px 0;
-    padding: 10px; 
-    background-color: #038929; 
+    padding: 10px;
+    background-color: #038929;
     border-radius: 10px
+}
+
+.hamburgerWrapper {
+    position: relative;
+}
+
+.hamburger {
+    background: none;
+    border: none;
+    color: #FFA979;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.hamburger:hover {
+    color: #ffffff;
+}
+
+.popup {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background-color: #038929;
+    border-radius: 8px;
+    padding: 8px 0;
+    z-index: 100;
+    min-width: 140px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.popupItem {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #FFA979;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    text-align: left;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.popupItem:hover {
+    color: #ffffff;
 }
 
 .li {
@@ -17,16 +66,8 @@
     font-weight: 900;
 }
 
-.li :nth-child(2) {
-    text-decoration: none;
-    color: #FFA979;
-    font-weight: 900;
-
-}
-
-.li :nth-child(2):hover {
+.li:hover {
     color: #ffffff;
-
 }
 
 .liDisabled {
@@ -37,22 +78,16 @@
     font-weight: 500;
 }
 
-.li:hover {
-    color: #ffffff;
-    
-}
-
 .liCart {
     position: relative;
 }
 
-.badgeContainer span{
+.badgeContainer span {
     position: relative;
     z-index: 2;
 }
 
 .badge {
-    position: relative;
     background-color: #FFFFFF;
     color: #4ECB71;
     padding: 2px;

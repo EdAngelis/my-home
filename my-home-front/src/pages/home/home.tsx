@@ -18,6 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     if (userId) navigate("/products");
+    else if (!localStorage.getItem("myhome_onboarding_done")) navigate("/welcome");
   }, []);
 
   const hLogin = async (event: any) => {

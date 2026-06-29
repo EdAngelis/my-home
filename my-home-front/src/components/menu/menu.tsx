@@ -1,50 +1,96 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context";
 import styles from "./menu.module.css";
 
+const MARKET_PATHS = ["/products", "/cart", "/create-product"];
+
 export default function Menu() {
   const { qtItemCart, userId, setUserId } = useContext(AppContext);
-  const [tabName, setTabName] = useState("Home");
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    userId === "" ? setTabName("Home") : setTabName("Logout");
-  }, [userId]);
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const hLogout = () => {
-    if (userId === "") return;
     setUserId("");
     localStorage.removeItem("buyerId");
+    setOpen(false);
+    navigate("/");
+  };
+
+  const goTo = (path: string) => {
+    setOpen(false);
+    navigate(path);
   };
 
   return (
     <div className={styles.container}>
       <nav className={styles.navBar}>
-        <Link className={styles.li} to="/" onClick={hLogout}>
-          {tabName}
-        </Link>
-
-        {userId === "" ? (
-          <div className={styles.liDisabled}>PRODUTOS</div>
-        ) : (
-          <Link className={styles.li} to="/products">
-            PRODUTOS
-          </Link>
-        )}
-
-        {userId === "" ? (
-          <div className={styles.liDisabled}>CART</div>
-        ) : (
-          <Link className={`${styles.li} ${styles.liCart}`} to="/cart">
-            <div className={styles.badgeContainer}>
-              <div className={styles.badge}>{qtItemCart}</div>
-              <span>CART</span>
+        <div className={styles.hamburgerWrapper} ref={menuRef}>
+          <button
+            className={styles.hamburger}
+            onClick={() => setOpen((prev) => !prev)}
+          >
+            ☰
+          </button>
+          {open && (
+            <div className={styles.popup}>
+              <button className={styles.popupItem} onClick={hLogout}>
+                Logout
+              </button>
+              <button
+                className={styles.popupItem}
+                onClick={() => goTo("/products")}
+              >
+                Market
+              </button>
+              <button
+                className={styles.popupItem}
+                onClick={() => goTo("/duties")}
+              >
+                Duties
+              </button>
             </div>
-          </Link>
+          )}
+        </div>
+
+        {MARKET_PATHS.includes(location.pathname) && (
+          <>
+            {userId === "" ? (
+              <div className={styles.liDisabled}>PRODUTOS</div>
+            ) : (
+              <Link className={styles.li} to="/products">
+                PRODUTOS
+              </Link>
+            )}
+
+            {userId === "" ? (
+              <div className={styles.liDisabled}>CART</div>
+            ) : (
+              <Link className={`${styles.li} ${styles.liCart}`} to="/cart">
+                <div className={styles.badgeContainer}>
+                  <div className={styles.badge}>{qtItemCart}</div>
+                  <span>CART</span>
+                </div>
+              </Link>
+            )}
+          </>
         )}
-        {/* <Link className="li" to="duties">
-          Duties
-        </Link> */}
+
+        {location.pathname === "/duties" && (
+          <span className={styles.li}>TAREFAS</span>
+        )}
       </nav>
       <Outlet />
     </div>
