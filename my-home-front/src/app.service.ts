@@ -2,6 +2,8 @@ import api from "./service/api";
 import IBuyer from "./models/buyer.model";
 import IDuties from "./models/duties.model";
 import IProduct from "./models/products.model";
+import ICategory from "./models/category.model";
+import IMaker from "./models/maker.model";
 
 const createBuyer = async (buyer: IBuyer) => {
 
@@ -14,8 +16,58 @@ const getProducts = async () => {
   return response.data.data;
 };
 
-const getDuties = async () => {
-  const response = await api.get("/duties");
+const getDuties = async (userId: string) => {
+  const response = await api.get(`/duties?createdByUserId=${userId}`);
+  return response.data;
+};
+
+const createDuty = async (duty: IDuties) => {
+  const response = await api.post("/duties/create", duty);
+  return response.data.data;
+};
+
+const deleteDuty = async (id: string) => {
+  const response = await api.delete(`/duties/${id}`);
+  return response.data;
+};
+
+const getCategories = async (userId: string) => {
+  const response = await api.get(`/categories?createdByUserId=${userId}`);
+  return response.data.data;
+};
+
+const createCategory = async (category: ICategory) => {
+  const response = await api.post("/categories/create", category);
+  return response.data.data;
+};
+
+const updateCategory = async (category: ICategory) => {
+  const response = await api.patch(`/categories/${category._id}`, category);
+  return response.data.data;
+};
+
+const deleteCategory = async (id: string) => {
+  const response = await api.delete(`/categories/${id}`);
+  return response.data;
+};
+
+const getMakers = async (userId: string) => {
+  const response = await api.get(`/makers?createdByUserId=${userId}`);
+  return response.data.data;
+};
+
+const createMaker = async (maker: IMaker) => {
+  const response = await api.post("/makers/create", maker);
+  return response.data.data;
+};
+
+const updateMaker = async (maker: IMaker) => {
+  const response = await api.patch(`/makers/${maker._id}`, maker);
+  return response.data.data;
+};
+
+const deleteMaker = async (id: string) => {
+  const response = await api.delete(`/makers/${id}`);
   return response.data;
 };
 
@@ -84,7 +136,17 @@ export {
   getBuyer,
   updateCart,
   getDuties,
+  createDuty,
+  deleteDuty,
   updateDuty,
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getMakers,
+  createMaker,
+  updateMaker,
+  deleteMaker,
   sendWhatsapp,
   deleteProduct,
   createProduct,

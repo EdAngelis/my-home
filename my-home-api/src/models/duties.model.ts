@@ -12,6 +12,10 @@ interface IDuties extends Document {
   value: number;
   history: History[];
   description: string;
+  createdByUserId?: string;
+  category?: string;
+  makers?: string[];
+  status?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -28,6 +32,10 @@ const schema = new Schema({
     },
   ],
   description: { type: String },
+  createdByUserId: { type: String },
+  category: { type: String },
+  makers: { type: [String], default: [] },
+  status: { type: String, enum: ["active", "paused"], default: "active" },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

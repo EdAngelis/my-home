@@ -19,7 +19,7 @@ Every controller response is JSON with the shape:
 ## Base URL / configuration
 
 - The server listens on `process.env.PORT`, defaulting to `3000` (`src/server.ts`).
-- There is no API versioning or path prefix — resource routers are mounted directly at the root (`src/routes/routes.ts`): `/products`, `/buyers`, `/cart`, `/duties`.
+- There is no API versioning or path prefix — resource routers are mounted directly at the root (`src/routes/routes.ts`): `/products`, `/buyers`, `/cart`, `/duties`, `/categories`, `/makers`.
 - The frontend points at this server via the `VITE_API_URL` environment variable (`my-home-front/src/service/api.ts`).
 - `GET /` (defined directly in `app.ts`, outside the resource routers) returns a plain text string and is not part of the resource API.
 
@@ -80,10 +80,36 @@ Known issues (do not treat as reference behavior — see `CLAUDE.md` "What NOT t
 | GET | `/duties` | List duties. |
 | POST | `/duties/create` | Create a duty. Body: `IDuties`-shaped object. |
 | GET | `/duties/:id` | Get a duty by id. |
-| PATCH | `/duties/:id` | Update a duty by id. Used by the frontend to append a new `history` entry when a duty is marked done. |
+| PATCH | `/duties/:id` | Update a duty by id. Used by the frontend to append a new `history` entry when a duty is marked done, to pause/unpause, and to edit. |
 | PATCH | `/duties` | Bulk-update duties matching a query. |
 | DELETE | `/duties/:id` | Delete a duty by id. |
 | DELETE | `/duties` | Bulk-delete duties matching a query. |
+
+`GET /duties` passes `req.query` straight through to Mongoose's `find`, so the frontend scopes the list per user and filters with query params: `createdByUserId` (owner buyer id), `category` (category id), `status` (`active` | `paused`), and `makers` (a maker id — matches duties whose `makers` array contains it).
+
+### Categories — `src/routes/categories.routes.ts` / `src/controller/categories.controller.ts`
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/categories` | List categories. Scoped per user via `?createdByUserId=<id>`. |
+| POST | `/categories/create` | Create a category. Body: `{ name: string, createdByUserId?: string }`. |
+| GET | `/categories/:id` | Get a category by id. |
+| PATCH | `/categories/:id` | Update a category by id. |
+| PATCH | `/categories` | Bulk-update categories matching a query. |
+| DELETE | `/categories/:id` | Delete a category by id. **Cascades**: clears `category` on any duty that referenced it (`Duty.updateMany({ category: id }, { category: "" })`). |
+| DELETE | `/categories` | Bulk-delete categories matching a query. |
+
+### Makers — `src/routes/makers.routes.ts` / `src/controller/makers.controller.ts`
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/makers` | List makers. Scoped per user via `?createdByUserId=<id>`. |
+| POST | `/makers/create` | Create a maker. Body: `{ name: string, createdByUserId?: string }`. |
+| GET | `/makers/:id` | Get a maker by id. |
+| PATCH | `/makers/:id` | Update a maker by id. |
+| PATCH | `/makers` | Bulk-update makers matching a query. |
+| DELETE | `/makers/:id` | Delete a maker by id. **Cascades**: pulls its id from every duty's `makers` array (`Duty.updateMany({ makers: id }, { $pull: { makers: id } })`). |
+| DELETE | `/makers` | Bulk-delete makers matching a query. |
 
 ## External / backend endpoints consumed
 
@@ -134,6 +160,30 @@ Defined as Mongoose schemas + TypeScript interfaces in `my-home-api/src/models/`
   value: number;          // required, default 1
   history: { date?: Date; maker?: string }[];
   description: string;
+  createdByUserId?: string; // owner buyer id — scopes the list per user
+  category?: string;        // category id
+  makers?: string[];        // maker ids, default []
+  status?: string;          // enum: "active" | "paused", default "active"
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+```
+
+**`ICategory`** (`models/categories.model.ts`)
+```ts
+{
+  name: string;             // required
+  createdByUserId?: string; // owner buyer id — scopes the list per user
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+```
+
+**`IMaker`** (`models/makers.model.ts`)
+```ts
+{
+  name: string;             // required
+  createdByUserId?: string; // owner buyer id — scopes the list per user
   createdAt?: Date;
   updatedAt?: Date;
 }

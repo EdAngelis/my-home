@@ -1,0 +1,98 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    margin-top: 20px;
+    height: 200px;
+    align-items: center;
+}
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.input {
+    display: grid;
+    grid-template-columns: minmax(100px, 240px);
+    grid-gap: 3px;
+}
+
+.input input[type="text"],
+.input input[type="number"] {
+    outline: none;
+    width: 100%;
+    height: 30px;
+    border: 1px solid #f9ab84;
+    border-radius: 5px;
+    padding: 5px;
+    color: #c15111;
+    font-size: 1.2rem;
+}
+
+.input input:focus {
+    border: 2px solid #f9ab84;
+}
+
+.input label {
+    color: #00641C;
+}
+
+.input input::placeholder {
+    color: #f9ab84;
+    font-size: 1rem;
+}
+
+.makers {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+}
+
+.makerItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #c15111;
+}
+
+.makerItem input {
+    width: auto;
+    height: auto;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    margin: 50px 0;
+}
+
+.buttons button {
+    border: none;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.buttons :nth-child(1) {
+    background-color: #FF9A62;
+    color: #FFF6F1;
+}
+
+.buttons :nth-child(1):hover {
+    background-color: #c15111;
+}
+
+.buttons :nth-child(2) {
+    color: #BDFFD0;
+    background-color: #00641C;
+}
+
+.buttons :nth-child(2):hover {
+    background-color: #3a9e5e;
+}

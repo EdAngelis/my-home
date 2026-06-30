@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:3000
+@categoryId = REPLACE_WITH_A_CATEGORY_ID
+@userId = REPLACE_WITH_A_BUYER_ID
+
+### List categories (scoped per user via query) — GET /categories
+GET {{baseUrl}}/categories?createdByUserId={{userId}}
+
+### Create a new category — POST /categories/create
+POST {{baseUrl}}/categories/create
+Content-Type: application/json
+
+{
+  "name": "Home",
+  "createdByUserId": "{{userId}}"
+}
+
+### Get a category by id — GET /categories/:id
+GET {{baseUrl}}/categories/{{categoryId}}
+
+### Update a category by id — PATCH /categories/:id
+PATCH {{baseUrl}}/categories/{{categoryId}}
+Content-Type: application/json
+
+{
+  "name": "Household"
+}
+
+### Bulk-update categories matching a query — PATCH /categories
+PATCH {{baseUrl}}/categories?createdByUserId={{userId}}
+Content-Type: application/json
+
+{
+  "name": "Renamed"
+}
+
+### Delete a category by id (cascades: clears it from referencing duties) — DELETE /categories/:id
+DELETE {{baseUrl}}/categories/{{categoryId}}
+
+### Bulk-delete categories matching a query — DELETE /categories
+DELETE {{baseUrl}}/categories?createdByUserId={{userId}}

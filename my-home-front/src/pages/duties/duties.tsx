@@ -1,43 +1,85 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
-import IDuties from "../../models/duties.model";
-import dateDifference from "../../shared/dates-interval";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { AppContext } from "../../context";
+import IDuties from "../../models/duties.model";
+import ICategory from "../../models/category.model";
+import IMaker from "../../models/maker.model";
+import { getDutyState, daysRemaining, DutyState } from "../../shared/duty-status";
+import { Dropdown } from "../../components";
 import "./duties.css";
 
-import {
-    getDuties,
-    updateDuty,
-  } from "../../app.service";
+import { getDuties, updateDuty, getCategories, getMakers } from "../../app.service";
+
+const STATUS_LABELS: Record<DutyState, string> = {
+  to_make: "To make",
+  expire_in: "Expire in",
+  paused: "Paused",
+};
 
 export default function Duties() {
-  const [pendents, setPendents] = useState<IDuties[]>([]);
+  const navigate = useNavigate();
+  const { userId } = useContext(AppContext);
+
+  const [duties, setDuties] = useState<IDuties[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [makers, setMakers] = useState<IMaker[]>([]);
+
+  const [statusFilter, setStatusFilter] = useState<string>("to_make");
+  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [makerFilter, setMakerFilter] = useState<string>("");
 
   useEffect(() => {
-    loadDuties();
+    if (userId === "") {
+      navigate("/");
+      return;
+    }
+    loadAll();
   }, []);
 
-  const loadDuties = async () => {
-    const response = await getDuties();
-    handlePending(response.data);
+  const loadAll = async () => {
+    try {
+      const [dutiesResp, cats, mkrs] = await Promise.all([
+        getDuties(userId),
+        getCategories(userId),
+        getMakers(userId),
+      ]);
+      setDuties(dutiesResp.data || []);
+      setCategories(cats || []);
+      setMakers(mkrs || []);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handlePending = useCallback((data: IDuties[]) => {
-    const pendents = data.filter((duty) => {
-      const dutyFrequency = duty.frequency;
-      const lastDutyExecution = duty.history[0].date;
-      const daysSinceLastExecution = lastDutyExecution
-        ? dateDifference(new Date(), new Date(lastDutyExecution))
-        : 199;
+  const loadDuties = async () => {
+    try {
+      const response = await getDuties(userId);
+      setDuties(response.data || []);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      if (daysSinceLastExecution > dutyFrequency) {
-        return true;
-      }
+  const categoryName = (id?: string) =>
+    categories.find((c) => c._id === id)?.name || "";
+
+  const makerNames = (ids?: string[]) =>
+    (ids || [])
+      .map((id) => makers.find((m) => m._id === id)?.name)
+      .filter(Boolean)
+      .join(", ");
+
+  const filtered = useMemo(() => {
+    return duties.filter((duty) => {
+      if (statusFilter && getDutyState(duty) !== statusFilter) return false;
+      if (categoryFilter && duty.category !== categoryFilter) return false;
+      if (makerFilter && !(duty.makers || []).includes(makerFilter)) return false;
+      return true;
     });
-
-    setPendents(pendents);
-  }, []);
+  }, [duties, statusFilter, categoryFilter, makerFilter]);
 
   const handleExecution = async (duty: IDuties) => {
     duty.history.unshift({ date: new Date() });
@@ -48,30 +90,92 @@ export default function Duties() {
       console.log(error);
     }
   };
-    return (
-        <Grid item className="duties" xs={4}>
-          <Grid container>
-            <h1>Duties</h1>
-            <AddCircleIcon />
+
+  const goTo = (path: string, params: any) => {
+    navigate(path, { state: params });
+  };
+
+  const statusBadge = (duty: IDuties) => {
+    const state = getDutyState(duty);
+    if (state === "expire_in") {
+      const days = daysRemaining(duty);
+      return `Expires in ${days} ${days === 1 ? "day" : "days"}`;
+    }
+    return STATUS_LABELS[state];
+  };
+
+  return (
+    <Grid item className="duties" xs={4}>
+      <Grid container className="dutiesHeader">
+        <h1>Duties</h1>
+        <div onClick={() => goTo("/create-duty", null)} className="addBtn">
+          <AddCircleIcon />
+        </div>
+      </Grid>
+
+      <Grid container className="filters">
+        <div className="filterItem">
+          <Dropdown
+            title="To make"
+            hSelection={(item) => setStatusFilter(item.value)}
+            options={[
+              { label: "All", value: "" },
+              { label: "To make", value: "to_make" },
+              { label: "Expire in", value: "expire_in" },
+              { label: "Paused", value: "paused" },
+            ]}
+          />
+        </div>
+        <div className="filterItem">
+          <Dropdown
+            title="Categoria"
+            hSelection={(item) => setCategoryFilter(item.value)}
+            options={[
+              { label: "All", value: "" },
+              ...categories.map((c) => ({ label: c.name, value: c._id || "" })),
+            ]}
+          />
+        </div>
+        <div className="filterItem">
+          <Dropdown
+            title="Responsável"
+            hSelection={(item) => setMakerFilter(item.value)}
+            options={[
+              { label: "All", value: "" },
+              ...makers.map((m) => ({ label: m.name, value: m._id || "" })),
+            ]}
+          />
+        </div>
+      </Grid>
+
+      <Grid container>
+        {filtered.map((duty, index) => (
+          <Grid container className="card" key={duty._id || index}>
+            <Grid
+              item
+              xs={10}
+              className="cardBody"
+              onClick={() => goTo("/create-duty", duty)}
+            >
+              <span className="cardName">{duty.name}</span>
+              {categoryName(duty.category) && (
+                <span className="cardCategory">{categoryName(duty.category)}</span>
+              )}
+              <span className={`cardStatus ${getDutyState(duty)}`}>
+                {statusBadge(duty)}
+              </span>
+              {makerNames(duty.makers) && (
+                <span className="cardMakers">{makerNames(duty.makers)}</span>
+              )}
+            </Grid>
+            <Grid item xs={2} className="cardAction">
+              <div onClick={() => handleExecution(duty)}>
+                <PlayCircleFilledIcon />
+              </div>
+            </Grid>
           </Grid>
-          <Grid container>
-            {pendents.map((duty, index) => (
-              <Grid container className="table" key={index}>
-                <Grid item xs={10}>
-                  <span> {duty.name}</span>
-                </Grid>
-                <Grid item xs={2}>
-                  <div
-                    onClick={() => {
-                      handleExecution(duty);
-                    }}
-                  >
-                    <PlayCircleFilledIcon />
-                  </div>
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-    )
+        ))}
+      </Grid>
+    </Grid>
+  );
 }

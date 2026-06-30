@@ -1,0 +1,54 @@
+@baseUrl = http://localhost:3000
+@dutyId = REPLACE_WITH_A_DUTY_ID
+@userId = REPLACE_WITH_A_BUYER_ID
+
+### List duties (scoped per user; query is passed straight to Mongoose find) — GET /duties
+GET {{baseUrl}}/duties?createdByUserId={{userId}}
+# &category=REPLACE_WITH_A_CATEGORY_ID
+# &status=active
+# &makers=REPLACE_WITH_A_MAKER_ID
+
+### Create a new duty — POST /duties/create
+POST {{baseUrl}}/duties/create
+Content-Type: application/json
+
+{
+  "cod": "clean-kitchen-1717171717171",
+  "name": "Clean the kitchen",
+  "frequency": 7,
+  "value": 1,
+  "description": "Wipe counters and sweep the floor",
+  "history": [],
+  "createdByUserId": "{{userId}}",
+  "category": "REPLACE_WITH_A_CATEGORY_ID",
+  "makers": ["REPLACE_WITH_A_MAKER_ID"],
+  "status": "active"
+}
+
+### Get a duty by id — GET /duties/:id
+GET {{baseUrl}}/duties/{{dutyId}}
+
+### Update a duty by id (mark done / edit / pause) — PATCH /duties/:id
+PATCH {{baseUrl}}/duties/{{dutyId}}
+Content-Type: application/json
+
+{
+  "frequency": 14,
+  "makers": ["REPLACE_WITH_A_MAKER_ID"],
+  "status": "paused",
+  "history": [{ "date": "2026-06-30T00:00:00.000Z", "maker": "REPLACE_WITH_A_MAKER_ID" }]
+}
+
+### Bulk-update duties matching a query — PATCH /duties
+PATCH {{baseUrl}}/duties?createdByUserId={{userId}}
+Content-Type: application/json
+
+{
+  "status": "active"
+}
+
+### Delete a duty by id — DELETE /duties/:id
+DELETE {{baseUrl}}/duties/{{dutyId}}
+
+### Bulk-delete duties matching a query — DELETE /duties
+DELETE {{baseUrl}}/duties?createdByUserId={{userId}}

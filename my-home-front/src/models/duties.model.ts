@@ -3,7 +3,7 @@ type HistoryType = {
   maker?: string;
 };
 
-interface IDuties extends Document {
+interface IDuties {
   _id?: string;
   cod: string;
   name: string;
@@ -11,6 +11,10 @@ interface IDuties extends Document {
   value: number;
   history: HistoryType[];
   description: string;
+  createdByUserId?: string;
+  category?: string;
+  makers?: string[];
+  status?: "active" | "paused";
   createdAt?: Date;
   updatedAt?: Date;
 }

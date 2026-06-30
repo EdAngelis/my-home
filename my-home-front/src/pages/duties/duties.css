@@ -1,9 +1,100 @@
 .duties {
-    width: 100%;
-    height: 100%;
-    background: blue;
-  }
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+}
 
-  .table {
-    border: solid 1px black;
-  }
+.dutiesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.dutiesHeader h1 {
+  color: #00641c;
+  margin: 0;
+}
+
+.addBtn {
+  cursor: pointer;
+  color: #00641c;
+  display: flex;
+  align-items: center;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.filterItem {
+  flex: 1;
+  min-width: 0;
+}
+
+.card {
+  display: flex;
+  align-items: stretch;
+  border: solid 1px #f9ab84;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.cardName {
+  font-weight: 600;
+  color: #c15111;
+}
+
+.cardCategory {
+  font-size: 0.85rem;
+  color: #00641c;
+}
+
+.cardStatus {
+  font-size: 0.8rem;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #eee;
+  color: #555;
+}
+
+.cardStatus.to_make {
+  background: #ffe0d4;
+  color: #c15111;
+}
+
+.cardStatus.expire_in {
+  background: #d1ffcd;
+  color: #00641c;
+}
+
+.cardStatus.paused {
+  background: #e4e4e4;
+  color: #777;
+}
+
+.cardMakers {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.cardAction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00641c;
+  cursor: pointer;
+}
