@@ -33,6 +33,7 @@
 
 .filterItem {
   --dropdown-color: var(--duties-accent);
+  --dropdown-border-color: var(--duties-accent);
   flex: 1;
   min-width: 0;
 }
