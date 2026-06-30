@@ -111,7 +111,7 @@ export default function Products() {
         </div>
         <CheckBox
           label="Apenas meus produtos"
-          checked={true}
+          checked={userProductsOnly}
           onChange={(checked) => setUserProductsOnly(checked)}
         />
         {filteredProducts
