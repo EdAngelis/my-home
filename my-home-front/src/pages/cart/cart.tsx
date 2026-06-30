@@ -145,7 +145,7 @@ export default function Cart() {
             hCleanCart();
           }}
         >
-          Limpar
+          Clear
         </button>
       </div>
     </>
