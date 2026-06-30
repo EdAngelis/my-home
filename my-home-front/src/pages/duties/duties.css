@@ -93,8 +93,16 @@
 
 .cardAction {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   color: #00641c;
   cursor: pointer;
+}
+
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

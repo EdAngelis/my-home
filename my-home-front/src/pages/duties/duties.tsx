@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import TrashIcon from "../../components/svg/trash-icon";
 import { AppContext } from "../../context";
 import IDuties from "../../models/duties.model";
 import ICategory from "../../models/category.model";
@@ -18,6 +19,7 @@ import "./duties.css";
 import {
   getDuties,
   updateDuty,
+  deleteDuty,
   getCategories,
   getMakers,
 } from "../../app.service";
@@ -95,6 +97,17 @@ export default function Duties() {
     duty.history.unshift({ date: new Date() });
     try {
       await updateDuty(duty);
+      await loadDuties();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (duty: IDuties) => {
+    if (!duty._id) return;
+    if (!window.confirm(`Excluir a tarefa "${duty.name}"?`)) return;
+    try {
+      await deleteDuty(duty._id);
       await loadDuties();
     } catch (error) {
       console.log(error);
@@ -183,6 +196,9 @@ export default function Duties() {
             <Grid item xs={2} className="cardAction">
               <div onClick={() => handleExecution(duty)}>
                 <PlayCircleFilledIcon />
+              </div>
+              <div className="deleteBtn" onClick={() => handleDelete(duty)}>
+                <TrashIcon color1="#00641C" color2="#D1FFCD" />
               </div>
             </Grid>
           </Grid>
