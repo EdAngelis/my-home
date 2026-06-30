@@ -10,26 +10,30 @@
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
-    justify-items: center;
     background-color: #FFFAF8;
     width: auto;
     height: 200px;
 }
 
-.btnEnter {
-    padding: 12px 40px;
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: #FFFAF8;
-    background-color: #c15111;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+.loginInput {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 3px;
+    justify-content: center;
+    justify-items: center;
 }
 
-.btnEnter:hover {
-    background-color: #a04010;
+.loginInput label {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #038929;
+}
+
+.loginInput span {
+    font-size: 0.8rem;
+    color: #038929;
+    text-align: center;
+    margin-top: 5px;
 }
 
 .container p {
@@ -37,4 +41,16 @@
     font-size: 1.5rem;
     font-weight: 900;
     color: #FFDED3;
+}
+
+.error {
+    height: 10px;
+}
+
+.error p {
+    height: 20px;
+    color: red;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 2px;
 }
