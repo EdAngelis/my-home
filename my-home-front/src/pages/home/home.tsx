@@ -62,7 +62,6 @@ export default function Home() {
             <Loading />
           ) : (
             <div className={styles.loginInput}>
-              <label>LOGIN</label>
               <InputButton
                 label="Entrar"
                 value={cpf}

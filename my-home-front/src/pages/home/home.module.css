@@ -23,10 +23,13 @@
     justify-items: center;
 }
 
-.loginInput label {
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: #038929;
+.loginInput input {
+    max-width: 180px;
+}
+
+.loginInput button {
+    background-color: #038929;
+    color: #ffffff;
 }
 
 .loginInput span {
