@@ -7,11 +7,20 @@ import { AppContext } from "../../context";
 import IDuties from "../../models/duties.model";
 import ICategory from "../../models/category.model";
 import IMaker from "../../models/maker.model";
-import { getDutyState, daysRemaining, DutyState } from "../../shared/duty-status";
+import {
+  getDutyState,
+  daysRemaining,
+  DutyState,
+} from "../../shared/duty-status";
 import { Dropdown } from "../../components";
 import "./duties.css";
 
-import { getDuties, updateDuty, getCategories, getMakers } from "../../app.service";
+import {
+  getDuties,
+  updateDuty,
+  getCategories,
+  getMakers,
+} from "../../app.service";
 
 const STATUS_LABELS: Record<DutyState, string> = {
   to_make: "To make",
@@ -76,7 +85,8 @@ export default function Duties() {
     return duties.filter((duty) => {
       if (statusFilter && getDutyState(duty) !== statusFilter) return false;
       if (categoryFilter && duty.category !== categoryFilter) return false;
-      if (makerFilter && !(duty.makers || []).includes(makerFilter)) return false;
+      if (makerFilter && !(duty.makers || []).includes(makerFilter))
+        return false;
       return true;
     });
   }, [duties, statusFilter, categoryFilter, makerFilter]);
@@ -159,7 +169,9 @@ export default function Duties() {
             >
               <span className="cardName">{duty.name}</span>
               {categoryName(duty.category) && (
-                <span className="cardCategory">{categoryName(duty.category)}</span>
+                <span className="cardCategory">
+                  {categoryName(duty.category)}
+                </span>
               )}
               <span className={`cardStatus ${getDutyState(duty)}`}>
                 {statusBadge(duty)}
