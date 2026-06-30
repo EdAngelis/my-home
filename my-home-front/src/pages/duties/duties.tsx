@@ -38,7 +38,7 @@ export default function Duties() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [makers, setMakers] = useState<IMaker[]>([]);
 
-  const [statusFilter, setStatusFilter] = useState<string>("to_make");
+  const [statusFilter, setStatusFilter] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [makerFilter, setMakerFilter] = useState<string>("");
 
@@ -139,7 +139,7 @@ export default function Duties() {
       <Grid container className="filters">
         <div className="filterItem">
           <Dropdown
-            title="To make"
+            title="All"
             hSelection={(item) => setStatusFilter(item.value)}
             options={[
               { label: "All", value: "" },
