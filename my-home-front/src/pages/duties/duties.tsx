@@ -123,7 +123,7 @@ export default function Duties() {
     const state = getDutyState(duty);
     if (state === "expire_in") {
       const days = daysRemaining(duty);
-      return `Expires in ${days} ${days === 1 ? "day" : "days"}`;
+      return `In ${days} ${days === 1 ? "day" : "days"}`;
     }
     return STATUS_LABELS[state];
   };
