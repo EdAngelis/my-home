@@ -121,7 +121,7 @@ export default function CreateDuty() {
   }));
 
   const selectedCategoryName =
-    categories.find((c) => c._id === category)?.name || "Categoria";
+    categories.find((c) => c._id === category)?.name || "Category";
 
   return (
     <>
@@ -132,11 +132,11 @@ export default function CreateDuty() {
       ) : (
         <form onSubmit={handleSubmit(hSubmit)}>
           <div className={styles.input}>
-            <label>Nome</label>
+            <label>Name</label>
             <input {...register("name")} type="text" />
           </div>
           <div className={styles.input}>
-            <label>Recorrência (dias)</label>
+            <label>Recurrence (days)</label>
             <input
               {...register("frequency")}
               placeholder="Ex: 7"
@@ -144,7 +144,7 @@ export default function CreateDuty() {
             />
           </div>
           <div className={styles.input}>
-            <label>Descrição</label>
+            <label>Description</label>
             <input {...register("description")} type="text" />
           </div>
           <div className={styles.input}>
@@ -155,7 +155,7 @@ export default function CreateDuty() {
             />
           </div>
           <div className={styles.input}>
-            <label>Responsáveis</label>
+            <label>Makers</label>
             <div className={styles.makers}>
               {makers.map((maker) => (
                 <label key={maker._id} className={styles.makerItem}>
@@ -176,14 +176,14 @@ export default function CreateDuty() {
                 checked={paused}
                 onChange={(e) => setPaused(e.target.checked)}
               />
-              Pausada
+              Paused
             </label>
           </div>
           <div className={styles.buttons}>
             <button type="button" onClick={() => goTo("/duties")}>
-              Cancelar
+              Cancel
             </button>
-            <button type="submit">Salvar</button>
+            <button type="submit">Save</button>
           </div>
         </form>
       )}

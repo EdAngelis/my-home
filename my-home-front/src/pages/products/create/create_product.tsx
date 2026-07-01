@@ -74,7 +74,7 @@ export default function CreateProduct() {
             <input {...register("name")} type="text" />
           </div>
           <div className={styles.input}>
-            <label>Marca</label>
+            <label>Brand</label>
             <input
               {...register("badge")}
               placeholder="Ex: Coca-Cola, Nestlé, etc"
@@ -82,22 +82,22 @@ export default function CreateProduct() {
             />
           </div>
           <div className={styles.input}>
-            <label>Preço</label>
+            <label>Price</label>
             <input {...register("price")} placeholder="Ex: 1,99" type="text" />
           </div>
           <div className={styles.input}>
             <Dropdown
               hSelection={hSelection}
-              title="Unidade de Medida"
+              title="Unit of Measure"
               options={[
                 { label: "Kg", value: "kg" },
-                { label: "Unidade", value: "un" },
+                { label: "Unit", value: "un" },
               ]}
             />
           </div>
           {unitKg && (
             <div className={styles.input}>
-              <label>Tamanho</label>
+              <label>Size</label>
               <input
                 {...register("size")}
                 placeholder="Ex: 100ml, 1L, 1kg, 400gr"
@@ -106,8 +106,8 @@ export default function CreateProduct() {
             </div>
           )}
           <div className={styles.buttons}>
-            <button onClick={() => goTo("/products")}>Cancelar</button>
-            <button type="submit">Salvar</button>
+            <button onClick={() => goTo("/products")}>Cancel</button>
+            <button type="submit">Save</button>
           </div>
         </form>
       )}

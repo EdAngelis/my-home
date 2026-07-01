@@ -98,20 +98,20 @@ export default function Products() {
       <div className={styles.container}>
         <div className={styles.top}>
           <button onClick={() => goTo("/create-product", null)}>
-            NOVO PRODUTO
+            NEW PRODUCT
           </button>
         </div>
 
         <div className={styles.filter}>
           <input
-            placeholder="FILTRAR PRODUTOS"
+            placeholder="FILTER PRODUCTS"
             type="text"
             onChange={(event) => handleFilter(event)}
           />
         </div>
         <CheckBox
-          label="Apenas meus produtos"
-          checked={userProductsOnly}
+          label="My products only"
+          checked={true}
           onChange={(checked) => setUserProductsOnly(checked)}
         />
         {filteredProducts

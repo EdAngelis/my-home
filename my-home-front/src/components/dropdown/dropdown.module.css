@@ -7,8 +7,8 @@
     height: 30px;
     border-radius: 5px;
     cursor: pointer;
-    border: 1px solid #f9ab84;
-    color: #c15111;
+    border: 1px solid var(--dropdown-border-color, #f9ab84);
+    color: var(--dropdown-color, #c15111);
 }
 
 .title {
