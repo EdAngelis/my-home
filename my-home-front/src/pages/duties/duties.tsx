@@ -131,7 +131,6 @@ export default function Duties() {
   return (
     <Grid item className="duties" xs={4}>
       <Grid container className="dutiesHeader">
-        <h1>Duties</h1>
         <div onClick={() => goTo("/create-duty", null)} className="addBtn">
           <AddCircleIcon />
         </div>
