@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import TrashIcon from "../../components/svg/trash-icon";
 import { AppContext } from "../../context";
 import IDuties from "../../models/duties.model";
@@ -137,6 +138,7 @@ export default function Duties() {
       </Grid>
 
       <Grid container className="filters">
+        <FilterListIcon aria-hidden className="filterIcon" />
         <div className="filterItem">
           <Dropdown
             title="To make"

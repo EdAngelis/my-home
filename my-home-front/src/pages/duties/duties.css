@@ -26,8 +26,14 @@
 .filters {
   display: flex;
   flex-wrap: nowrap;
+  align-items: center;
   gap: 10px;
   margin: 16px 0;
+}
+
+.filterIcon {
+  color: #00641c;
+  flex-shrink: 0;
 }
 
 .filterItem {
