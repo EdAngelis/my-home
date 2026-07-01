@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
-import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import TrashIcon from "../../components/svg/trash-icon";
 import { AppContext } from "../../context";
@@ -174,9 +173,14 @@ export default function Duties() {
       <Grid container>
         {filtered.map((duty, index) => (
           <Grid container className="card" key={duty._id || index}>
+            <Grid item xs={2} className="cardDone">
+              <span className="doneBtn" onClick={() => handleExecution(duty)}>
+                Done
+              </span>
+            </Grid>
             <Grid
               item
-              xs={10}
+              xs={8}
               className="cardBody"
               onClick={() => goTo("/create-duty", duty)}
             >
@@ -194,9 +198,6 @@ export default function Duties() {
               )}
             </Grid>
             <Grid item xs={2} className="cardAction">
-              <div onClick={() => handleExecution(duty)}>
-                <PlayCircleFilledIcon />
-              </div>
               <div className="deleteBtn" onClick={() => handleDelete(duty)}>
                 <TrashIcon color1="#00641C" color2="#D1FFCD" />
               </div>

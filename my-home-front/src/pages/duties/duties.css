@@ -91,12 +91,31 @@
   color: #777;
 }
 
-.cardAction {
+.cardDone {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+}
+
+.doneBtn {
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #00641c;
+  color: #d1ffcd;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.doneBtn:hover {
+  background: #3a9e5e;
+}
+
+.cardAction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #00641c;
   cursor: pointer;
 }

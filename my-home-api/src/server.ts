@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { chalkError, chalkSuccess } from "./tools/chalk";
 import connect from "./db";
 import logger from "./tools/winston";

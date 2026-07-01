@@ -4,3 +4,4 @@ package-lock.json
 .serverless
 .aws-sam
 .env
+samconfig.toml

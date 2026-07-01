@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 type Environments = {
   db_uri: string;
   serverless: string;
@@ -8,15 +10,21 @@ type Config = {
   production: Environments;
 };
 
-const config = {
+const getDbUri = () => {
+  if (!process.env.DB_URI) {
+    throw new Error("DB_URI environment variable is required");
+  }
+
+  return process.env.DB_URI;
+};
+
+const config: Config = {
   development: {
-    db_uri:
-      process.env.DB_URI ||
-      "mongodb+srv://ed4ngelis:ruZLG0lCffpmze9A@cluster0.l90zluj.mongodb.net/my-home?retryWrites=true&w=majority",
+    db_uri: getDbUri(),
     serverless: process.env.SERVERLESS || "false",
   },
   production: {
-    db_uri: process.env.DB_URI as string,
+    db_uri: getDbUri(),
     serverless: process.env.SERVERLESS || "false",
   },
 };

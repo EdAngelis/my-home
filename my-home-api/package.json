@@ -25,6 +25,7 @@
     "@types/winston": "^2.4.4",
     "chalk": "^4.1.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
     "express": "^4.18.2",
     "mongoose": "^7.3.0",
     "morgan": "^1.10.0",
