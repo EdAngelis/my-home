@@ -70,8 +70,6 @@ export default function Home() {
                 onClick={() => hLogin()}
                 placeholder="Enter your email or CPF"
                 type="text"
-                name="cpf"
-                id="cpf"
               />
               <div className={styles.error}>
                 {error && <p>Invalid email or CPF</p>}
