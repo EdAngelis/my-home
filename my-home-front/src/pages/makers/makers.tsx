@@ -52,15 +52,15 @@ export default function Makers() {
 
   return (
     <div className={styles.container}>
-      <h1>Responsáveis</h1>
+      <h1>Makers</h1>
       <div className={styles.add}>
         <input
-          placeholder="Novo responsável"
+          placeholder="New maker"
           value={name}
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAdd()}
         />
-        <button onClick={handleAdd}>ADICIONAR</button>
+        <button onClick={handleAdd}>ADD</button>
       </div>
       <div className={styles.list}>
         {makers.map((maker) => (

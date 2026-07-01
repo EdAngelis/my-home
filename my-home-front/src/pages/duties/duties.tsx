@@ -105,7 +105,7 @@ export default function Duties() {
 
   const handleDelete = async (duty: IDuties) => {
     if (!duty._id) return;
-    if (!window.confirm(`Excluir a tarefa "${duty.name}"?`)) return;
+    if (!window.confirm(`Delete duty "${duty.name}"?`)) return;
     try {
       await deleteDuty(duty._id);
       await loadDuties();
@@ -151,7 +151,7 @@ export default function Duties() {
         </div>
         <div className="filterItem">
           <Dropdown
-            title="Categoria"
+            title="Category"
             hSelection={(item) => setCategoryFilter(item.value)}
             options={[
               { label: "All", value: "" },
@@ -161,7 +161,7 @@ export default function Duties() {
         </div>
         <div className="filterItem">
           <Dropdown
-            title="Responsável"
+            title="Maker"
             hSelection={(item) => setMakerFilter(item.value)}
             options={[
               { label: "All", value: "" },
