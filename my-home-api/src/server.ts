@@ -11,7 +11,7 @@ connect();
 export const handler = serverless(app);
 
 if (config.serverless !== "true") {
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3003;
 
   const server = app.listen(port, () => {
     console.log(`Server running on port ${chalkSuccess(port)}`);
@@ -24,7 +24,7 @@ if (config.serverless !== "true") {
 
 process.on("unhandledRejection", (reason, promise) => {
   console.log(
-    chalkError("Unhandled Rejection at:", promise, "reason:", reason)
+    chalkError("Unhandled Rejection at:", promise, "reason:", reason),
   );
   // Application specific logging, throwing an error, or other logic here
 });

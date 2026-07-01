@@ -11,7 +11,8 @@ type Config = {
 const config = {
   development: {
     db_uri:
-      "mongodb://localhost:27017/",
+      process.env.DB_URI ||
+      "mongodb+srv://ed4ngelis:ruZLG0lCffpmze9A@cluster0.l90zluj.mongodb.net/my-home?retryWrites=true&w=majority",
     serverless: process.env.SERVERLESS || "false",
   },
   production: {

@@ -4,6 +4,7 @@ import { AppContext } from "../../context";
 import styles from "./menu.module.css";
 
 const MARKET_PATHS = ["/products", "/cart", "/create-product"];
+const DUTIES_PATHS = ["/duties", "/create-duty", "/categories", "/makers"];
 
 export default function Menu() {
   const { qtItemCart, userId, setUserId } = useContext(AppContext);
@@ -68,10 +69,10 @@ export default function Menu() {
         {MARKET_PATHS.includes(location.pathname) && (
           <>
             {userId === "" ? (
-              <div className={styles.liDisabled}>PRODUTOS</div>
+              <div className={styles.liDisabled}>PRODUCTS</div>
             ) : (
               <Link className={styles.li} to="/products">
-                PRODUTOS
+                PRODUCTS
               </Link>
             )}
 
@@ -88,8 +89,18 @@ export default function Menu() {
           </>
         )}
 
-        {location.pathname === "/duties" && (
-          <span className={styles.li}>TAREFAS</span>
+        {DUTIES_PATHS.includes(location.pathname) && (
+          <>
+            <Link className={styles.li} to="/duties">
+              DUTIES
+            </Link>
+            <Link className={styles.li} to="/categories">
+              CATEGORIES
+            </Link>
+            <Link className={styles.li} to="/makers">
+              MAKERS
+            </Link>
+          </>
         )}
       </nav>
       <Outlet />
