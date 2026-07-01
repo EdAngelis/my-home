@@ -3,6 +3,7 @@ import { cpfValidator, EmailValidator } from "../../components/validators";
 import { getBuyerByCpf, createBuyer } from "../../app.service";
 import { AppContext } from "../../context";
 import { Loading } from "../../components";
+import InputButton from "../../components/input-button/input-button";
 import styles from "./home.module.css";
 import { useNavigate } from "react-router-dom";
 import IBuyer from "../../models/buyer.model";
@@ -12,8 +13,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  let { userId, setUserId } = useContext(AppContext);
-
+  const { userId, setUserId } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,16 +21,15 @@ export default function Home() {
     else if (!localStorage.getItem("myhome_onboarding_done")) navigate("/welcome");
   }, []);
 
-  const hLogin = async (event: any) => {
-    if (event.key !== "Enter") return;
-    if (cpfValidator(cpf) || EmailValidator(cpf)) {
+  const hLogin = async (cpfValue: string = cpf) => {
+    if (cpfValidator(cpfValue) || EmailValidator(cpfValue)) {
       setLoading(true);
       try {
-        const resp = await getBuyerByCpf(cpf);
+        const resp = await getBuyerByCpf(cpfValue);
         const { message } = resp;
 
         if (message === "Buyer not found") {
-          const newBuyer: IBuyer = { cpf };
+          const newBuyer: IBuyer = { cpf: cpfValue };
           const resp = await createBuyer(newBuyer);
           if (resp.status === 200) {
             const id = resp.data.data._id;
@@ -63,28 +62,24 @@ export default function Home() {
             <Loading />
           ) : (
             <div className={styles.loginInput}>
-              <label htmlFor="cpf">LOGIN</label>
-              <input
-                onChange={(e) => {
-                  setCpf(e.target.value);
-                  setError(false);
-                }}
-                onKeyDown={hLogin}
+              <InputButton
+                label="Login"
                 value={cpf}
-                placeholder="Use seu EMAIL ou CPF"
+                onInputChange={(v) => { setCpf(v); setError(false); }}
+                onKey={(v) => hLogin(v)}
+                onClick={() => hLogin()}
+                placeholder="Enter your email or CPF"
                 type="text"
-                name="cpf"
-                id="cpf"
               />
               <div className={styles.error}>
-                {error && <p>E-mail ou CPF inválidos</p>}
+                {error && <p>Invalid email or CPF</p>}
               </div>
 
-              <span>Caso não existam uma nova conta será criada</span>
+              <span>If no account exists, a new one will be created</span>
             </div>
           )}
         </div>
-        <p>O intuito deste App é o envio de listas de compras pelo WhatsApp</p>
+        <p>This app lets you send shopping lists via WhatsApp</p>
       </div>
     </>
   );

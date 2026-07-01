@@ -1,4 +1,5 @@
 .duties {
+  --duties-accent: #00641c;
   width: 100%;
   height: 100%;
   padding: 0 16px;
@@ -12,7 +13,7 @@
 }
 
 .dutiesHeader h1 {
-  color: #00641c;
+  color: var(--duties-accent);
   margin: 0;
 }
 
@@ -26,11 +27,19 @@
 .filters {
   display: flex;
   flex-wrap: nowrap;
+  align-items: center;
   gap: 10px;
   margin: 16px 0;
 }
 
+.filterIcon {
+  color: #00641c;
+  flex-shrink: 0;
+}
+
 .filterItem {
+  --dropdown-color: var(--duties-accent);
+  --dropdown-border-color: var(--duties-accent);
   flex: 1;
   min-width: 0;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import TrashIcon from "../../components/svg/trash-icon";
 import { AppContext } from "../../context";
 import IDuties from "../../models/duties.model";
@@ -37,7 +38,7 @@ export default function Duties() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [makers, setMakers] = useState<IMaker[]>([]);
 
-  const [statusFilter, setStatusFilter] = useState<string>("to_make");
+  const [statusFilter, setStatusFilter] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [makerFilter, setMakerFilter] = useState<string>("");
 
@@ -104,7 +105,7 @@ export default function Duties() {
 
   const handleDelete = async (duty: IDuties) => {
     if (!duty._id) return;
-    if (!window.confirm(`Excluir a tarefa "${duty.name}"?`)) return;
+    if (!window.confirm(`Delete duty "${duty.name}"?`)) return;
     try {
       await deleteDuty(duty._id);
       await loadDuties();
@@ -121,7 +122,7 @@ export default function Duties() {
     const state = getDutyState(duty);
     if (state === "expire_in") {
       const days = daysRemaining(duty);
-      return `Expires in ${days} ${days === 1 ? "day" : "days"}`;
+      return `In ${days} ${days === 1 ? "day" : "days"}`;
     }
     return STATUS_LABELS[state];
   };
@@ -129,16 +130,16 @@ export default function Duties() {
   return (
     <Grid item className="duties" xs={4}>
       <Grid container className="dutiesHeader">
-        <h1>Duties</h1>
         <div onClick={() => goTo("/create-duty", null)} className="addBtn">
           <AddCircleIcon />
         </div>
       </Grid>
 
       <Grid container className="filters">
+        <FilterListIcon aria-hidden className="filterIcon" />
         <div className="filterItem">
           <Dropdown
-            title="To make"
+            title="All"
             hSelection={(item) => setStatusFilter(item.value)}
             options={[
               { label: "All", value: "" },
@@ -150,7 +151,7 @@ export default function Duties() {
         </div>
         <div className="filterItem">
           <Dropdown
-            title="Categoria"
+            title="Category"
             hSelection={(item) => setCategoryFilter(item.value)}
             options={[
               { label: "All", value: "" },
@@ -160,7 +161,7 @@ export default function Duties() {
         </div>
         <div className="filterItem">
           <Dropdown
-            title="Responsável"
+            title="Maker"
             hSelection={(item) => setMakerFilter(item.value)}
             options={[
               { label: "All", value: "" },

@@ -56,15 +56,15 @@ export default function Categories() {
 
   return (
     <div className={styles.container}>
-      <h1>Categorias</h1>
+      <h1>Categories</h1>
       <div className={styles.add}>
         <input
-          placeholder="Nova categoria"
+          placeholder="New category"
           value={name}
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAdd()}
         />
-        <button onClick={handleAdd}>ADICIONAR</button>
+        <button onClick={handleAdd}>ADD</button>
       </div>
       <div className={styles.list}>
         {categories.map((category) => (
