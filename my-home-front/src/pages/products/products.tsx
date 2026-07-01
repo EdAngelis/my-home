@@ -14,25 +14,26 @@ import IBuyer from "../../models/buyer.model";
 import styles from "./products.module.css";
 import { formatPrice } from "../../components/formatters";
 import Alert from "../../components/alert/alert";
-import CheckBox from "../../components/check-box/check-box";
 
 export default function Products() {
   const navigate = useNavigate();
   const [products, setProducts] = useState<IProducts[]>([]);
   const [buyer, setBuyer] = useState<IBuyer>();
   const [alertOn, setAlertOn] = useState<boolean>(false);
-  const [userProductsOnly, setUserProductsOnly] = useState<boolean>(false);
   const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([]);
 
   const { userId, setQtItemCart } = useContext(AppContext);
 
   useEffect(() => {
-    loadProducts();
     userId !== "" ? loadBuyer() : goTo("/", null);
   }, []);
 
+  useEffect(() => {
+    if (userId !== "") loadProducts();
+  }, [userId]);
+
   const loadProducts = async () => {
-    const response = await getProducts();
+    const response = await getProducts(userId);
     setProducts(response);
     setFilteredProducts(response);
   };
@@ -109,64 +110,30 @@ export default function Products() {
             onChange={(event) => handleFilter(event)}
           />
         </div>
-        <CheckBox
-          label="My products only"
-          checked={true}
-          onChange={(checked) => setUserProductsOnly(checked)}
-        />
         {filteredProducts
           .filter((product) => !isInCart(product))
-          .map((product, index) => {
-            return userProductsOnly ? (
-              product.createdByUserId === userId && (
-                <div className={styles.row} key={index}>
-                  <div className={styles.trashIconDiv}>
-                    <div onClick={() => deleteProd(product._id)}>
-                      {product.createdByUserId === userId && (
-                        <TrashIcon color1="#00641C" color2="#D1FFCD" />
-                      )}
-                    </div>
-                  </div>
-                  <div
-                    onClick={() => goTo("/create-product", product)}
-                    className={styles.cardProduct}
-                  >
-                    <span className={styles.product}>{product.name}</span>
-                    <span className={styles.badge}>{product.badge}</span>
-                    <span className={styles.price}>
-                      {formatPrice(product.price)}
-                    </span>
-                  </div>
-                  <div onClick={() => addItemToCart(product)}>
-                    <CartIcon color1="#FF9A62" color2="#D1FFCD" />
-                  </div>
-                </div>
-              )
-            ) : (
-              <div className={styles.row} key={index}>
-                <div className={styles.trashIconDiv}>
-                  <div onClick={() => deleteProd(product._id)}>
-                    {product.createdByUserId !== userId && (
-                      <TrashIcon color1="#00641C" color2="#D1FFCD" />
-                    )}
-                  </div>
-                </div>
-                <div
-                  onClick={() => goTo("/create-product", product)}
-                  className={styles.cardProduct}
-                >
-                  <span className={styles.product}>{product.name}</span>
-                  <span className={styles.badge}>{product.badge}</span>
-                  <span className={styles.price}>
-                    {formatPrice(product.price)}
-                  </span>
-                </div>
-                <div onClick={() => addItemToCart(product)}>
-                  <CartIcon color1="#FF9A62" color2="#D1FFCD" />
+          .map((product, index) => (
+            <div className={styles.row} key={index}>
+              <div className={styles.trashIconDiv}>
+                <div onClick={() => deleteProd(product._id)}>
+                  <TrashIcon color1="#00641C" color2="#D1FFCD" />
                 </div>
               </div>
-            );
-          })}
+              <div
+                onClick={() => goTo("/create-product", product)}
+                className={styles.cardProduct}
+              >
+                <span className={styles.product}>{product.name}</span>
+                <span className={styles.badge}>{product.badge}</span>
+                <span className={styles.price}>
+                  {formatPrice(product.price)}
+                </span>
+              </div>
+              <div onClick={() => addItemToCart(product)}>
+                <CartIcon color1="#FF9A62" color2="#D1FFCD" />
+              </div>
+            </div>
+          ))}
       </div>
     </>
   );

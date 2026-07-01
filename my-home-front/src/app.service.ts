@@ -11,8 +11,8 @@ const createBuyer = async (buyer: IBuyer) => {
   return response;
 }
 
-const getProducts = async () => {
-  const response = await api.get("/products");
+const getProducts = async (userId: string) => {
+  const response = await api.get(`/products?createdByUserId=${userId}`);
   return response.data.data;
 };
 
