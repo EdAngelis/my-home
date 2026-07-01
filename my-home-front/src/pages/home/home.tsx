@@ -71,20 +71,20 @@ export default function Home() {
                 }}
                 onKeyDown={hLogin}
                 value={cpf}
-                placeholder="Use seu EMAIL ou CPF"
+                placeholder="Enter your email or CPF"
                 type="text"
                 name="cpf"
                 id="cpf"
               />
               <div className={styles.error}>
-                {error && <p>E-mail ou CPF inválidos</p>}
+                {error && <p>Invalid email or CPF</p>}
               </div>
 
-              <span>Caso não existam uma nova conta será criada</span>
+              <span>If no account exists, a new one will be created</span>
             </div>
           )}
         </div>
-        <p>O intuito deste App é o envio de listas de compras pelo WhatsApp</p>
+        <p>This app lets you send shopping lists via WhatsApp</p>
       </div>
     </>
   );

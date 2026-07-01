@@ -69,10 +69,10 @@ export default function Menu() {
         {MARKET_PATHS.includes(location.pathname) && (
           <>
             {userId === "" ? (
-              <div className={styles.liDisabled}>PRODUTOS</div>
+              <div className={styles.liDisabled}>PRODUCTS</div>
             ) : (
               <Link className={styles.li} to="/products">
-                PRODUTOS
+                PRODUCTS
               </Link>
             )}
 
@@ -92,13 +92,13 @@ export default function Menu() {
         {DUTIES_PATHS.includes(location.pathname) && (
           <>
             <Link className={styles.li} to="/duties">
-              TAREFAS
+              DUTIES
             </Link>
             <Link className={styles.li} to="/categories">
-              CATEGORIAS
+              CATEGORIES
             </Link>
             <Link className={styles.li} to="/makers">
-              RESPONSÁVEIS
+              MAKERS
             </Link>
           </>
         )}

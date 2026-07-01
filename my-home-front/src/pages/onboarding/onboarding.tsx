@@ -6,32 +6,32 @@ import styles from "./onboarding.module.css";
 const SLIDES = [
   {
     icon: homeIcon,
-    title: "Bem-vindo ao My Home",
-    description: "Organize suas compras e tarefas domésticas em um só lugar.",
+    title: "Welcome to My Home",
+    description: "Organize your shopping and household tasks in one place.",
   },
   {
     icon: null,
-    title: "Como entrar",
+    title: "How to sign in",
     description:
-      "Use seu CPF ou e-mail para fazer login. Se você ainda não tiver uma conta, ela será criada automaticamente.",
+      "Use your CPF or email to log in. If you don't have an account yet, one will be created automatically.",
   },
   {
     icon: plus,
-    title: "Produtos",
+    title: "Products",
     description:
-      "Navegue pelo catálogo, crie novos produtos e adicione-os ao seu carrinho.",
+      "Browse the catalog, create new products, and add them to your cart.",
   },
   {
     icon: null,
-    title: "Carrinho",
+    title: "Cart",
     description:
-      "Ajuste as quantidades e envie a lista de compras para o mercado pelo WhatsApp.",
+      "Adjust quantities and send your shopping list to the store via WhatsApp.",
   },
   {
     icon: null,
-    title: "Tarefas",
+    title: "Duties",
     description:
-      "Acompanhe as tarefas domésticas pendentes e marque-as como concluídas.",
+      "Track pending household tasks and mark them as complete.",
   },
 ];
 
@@ -50,7 +50,7 @@ export default function Onboarding() {
   return (
     <div className={styles.container}>
       <button className={styles.skip} onClick={finish}>
-        Pular
+        Skip
       </button>
 
       <div className={styles.card}>
@@ -70,7 +70,7 @@ export default function Onboarding() {
       <div className={styles.nav}>
         {step > 0 ? (
           <button className={styles.btnSecondary} onClick={() => setStep((s) => s - 1)}>
-            ← Anterior
+            ← Back
           </button>
         ) : (
           <span />
@@ -79,7 +79,7 @@ export default function Onboarding() {
           className={styles.btnPrimary}
           onClick={isLast ? finish : () => setStep((s) => s + 1)}
         >
-          {isLast ? "Começar!" : "Próximo →"}
+          {isLast ? "Get started!" : "Next →"}
         </button>
       </div>
     </div>
