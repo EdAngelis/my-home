@@ -37,8 +37,8 @@
 .flexContainer button {
     flex-grow: 1;
     border-radius: 0 5px 5px 0;
-    background-color: #4ECB71;
-    color: #BDFFD0;
+    background-color: #FF9A62;
+    color: #c15111;
     cursor: pointer;
     border: none;
 }
