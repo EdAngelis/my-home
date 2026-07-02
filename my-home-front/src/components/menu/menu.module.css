@@ -82,6 +82,12 @@
     position: relative;
 }
 
+.badgeContainer {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
 .badgeContainer span {
     position: relative;
     z-index: 2;
@@ -95,6 +101,6 @@
     font-size: 10px;
     position: absolute;
     top: -8px;
-    right: 12px;
+    right: -6px;
     z-index: 1;
 }
