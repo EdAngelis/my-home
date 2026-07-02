@@ -19,7 +19,7 @@ export default function CreateProduct() {
   const update = product ? true : false;
 
   useEffect(() => {
-    let defaultValues: any = {};
+    const defaultValues: any = {};
     defaultValues.name = product?.name;
     defaultValues.badge = product?.badge;
     defaultValues.price = product?.price;
