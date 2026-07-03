@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import TrashIcon from "../../components/svg/trash-icon";
 import { AppContext } from "../../context";
 import IDuties from "../../models/duties.model";
 import ICategory from "../../models/category.model";
@@ -19,7 +18,6 @@ import "./duties.css";
 import {
   getDuties,
   updateDuty,
-  deleteDuty,
   getCategories,
   getMakers,
 } from "../../app.service";
@@ -103,17 +101,6 @@ export default function Duties() {
     }
   };
 
-  const handleDelete = async (duty: IDuties) => {
-    if (!duty._id) return;
-    if (!window.confirm(`Delete duty "${duty.name}"?`)) return;
-    try {
-      await deleteDuty(duty._id);
-      await loadDuties();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const goTo = (path: string, params: any) => {
     navigate(path, { state: params });
   };
@@ -181,7 +168,7 @@ export default function Duties() {
             </Grid>
             <Grid
               item
-              xs={8}
+              xs={10}
               className="cardBody"
               onClick={() => goTo("/create-duty", duty)}
             >
@@ -197,11 +184,6 @@ export default function Duties() {
               {makerNames(duty.makers) && (
                 <span className="cardMakers">{makerNames(duty.makers)}</span>
               )}
-            </Grid>
-            <Grid item xs={2} className="cardAction">
-              <div className="deleteBtn" onClick={() => handleDelete(duty)}>
-                <TrashIcon color1="#00641C" color2="#D1FFCD" />
-              </div>
             </Grid>
           </Grid>
         ))}

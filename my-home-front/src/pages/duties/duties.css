@@ -120,17 +120,3 @@
 .doneBtn:hover {
   background: #3a9e5e;
 }
-
-.cardAction {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #00641c;
-  cursor: pointer;
-}
-
-.deleteBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}

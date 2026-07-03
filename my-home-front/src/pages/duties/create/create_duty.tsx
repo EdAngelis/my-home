@@ -3,6 +3,7 @@ import { AppContext } from "../../../context";
 import {
   createDuty,
   updateDuty,
+  deleteDuty,
   getCategories,
   getMakers,
 } from "../../../app.service";
@@ -67,6 +68,19 @@ export default function CreateDuty() {
 
   const goTo = (path: string) => {
     navigate(path);
+  };
+
+  const hDelete = async () => {
+    if (!duty?._id) return;
+    if (!window.confirm(`Delete duty "${duty.name}"?`)) return;
+    try {
+      setLoading(true);
+      await deleteDuty(duty._id);
+      goTo("/duties");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   const toggleMaker = (id: string) => {
@@ -184,6 +198,15 @@ export default function CreateDuty() {
               Cancel
             </button>
             <button type="submit">Save</button>
+            {update && (
+              <button
+                type="button"
+                className={styles.deleteBtn}
+                onClick={hDelete}
+              >
+                Delete
+              </button>
+            )}
           </div>
         </form>
       )}
