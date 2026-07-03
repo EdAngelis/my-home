@@ -94,7 +94,7 @@ export default function Cart() {
           <span>Total: {total}</span>
           <InputButton
             type="number"
-            label={phoneEditing ? "Save" : "Send"}
+            label={phoneEditing ? "Save" : "Send List to Market"}
             value={phoneEditing ? "Save" : "Send Order"}
             onClick={() =>
               phoneEditing
