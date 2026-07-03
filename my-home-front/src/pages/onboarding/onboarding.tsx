@@ -1,34 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { homeIcon, plus } from "../../assets/icons/icons";
 import styles from "./onboarding.module.css";
 
 const SLIDES = [
   {
-    icon: homeIcon,
     title: "Welcome to My Home",
     description: "Organize your shopping and household tasks in one place.",
   },
   {
-    icon: null,
     title: "How to sign in",
     description:
       "Use your CPF or email to log in. If you don't have an account yet, one will be created automatically.",
   },
   {
-    icon: plus,
     title: "Products",
     description:
       "Browse the catalog, create new products, and add them to your cart.",
   },
   {
-    icon: null,
     title: "Cart",
     description:
       "Adjust quantities and send your shopping list to the store via WhatsApp.",
   },
   {
-    icon: null,
     title: "Duties",
     description:
       "Track pending household tasks and mark them as complete.",
@@ -54,9 +48,6 @@ export default function Onboarding() {
       </button>
 
       <div className={styles.card}>
-        {slide.icon && (
-          <img className={styles.icon} src={slide.icon} alt="" />
-        )}
         <h2 className={styles.title}>{slide.title}</h2>
         <p className={styles.description}>{slide.description}</p>
       </div>
