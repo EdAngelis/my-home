@@ -10,7 +10,7 @@ import { Dropdown, Loading } from "../../../components";
 export default function CreateProduct() {
   const navigate = useNavigate();
 
-  const { userId } = useContext(AppContext);
+  const { userId, defaultHome, homeLoading } = useContext(AppContext);
   const [unitKg, setUnitKg] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -19,6 +19,11 @@ export default function CreateProduct() {
   const update = product ? true : false;
 
   useEffect(() => {
+    if (homeLoading) return;
+    if (defaultHome === "") {
+      navigate("/enter-home");
+      return;
+    }
     const defaultValues: any = {};
     defaultValues.name = product?.name;
     defaultValues.badge = product?.badge;
@@ -27,7 +32,8 @@ export default function CreateProduct() {
     defaultValues.size = product?.size;
     defaultValues.createdByUserId = product?.createdByUserId;
     reset(defaultValues);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultHome, homeLoading]);
 
   const goTo = (path: string) => {
     navigate(path);
@@ -38,9 +44,10 @@ export default function CreateProduct() {
     try {
       setLoading(true);
       if (update) {
-        await updateProduct(product._id, prod);
+        await updateProduct(product._id, defaultHome, prod);
       } else {
         prod.createdByUserId = userId;
+        prod.home = defaultHome;
         await createProduct(prod);
       }
 

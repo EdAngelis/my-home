@@ -13,13 +13,24 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const { userId, setUserId } = useContext(AppContext);
+  const { userId, setUserId, defaultHome, setDefaultHome, homeLoading } =
+    useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userId) navigate("/products");
-    else if (!localStorage.getItem("myhome_onboarding_done")) navigate("/welcome");
-  }, []);
+    if (userId) {
+      if (homeLoading) return;
+      navigate(defaultHome ? "/duties" : "/enter-home");
+    } else if (!localStorage.getItem("myhome_onboarding_done")) {
+      navigate("/welcome");
+    }
+  }, [userId, defaultHome, homeLoading]);
+
+  const goToHomeStep = (buyer?: IBuyer) => {
+    const home = buyer?.defaultHome || "";
+    setDefaultHome(home);
+    navigate(home ? "/duties" : "/enter-home");
+  };
 
   const hLogin = async (cpfValue: string = cpf) => {
     if (cpfValidator(cpfValue) || EmailValidator(cpfValue)) {
@@ -32,18 +43,21 @@ export default function Home() {
           const newBuyer: IBuyer = { cpf: cpfValue };
           const resp = await createBuyer(newBuyer);
           if (resp.status === 200) {
-            const id = resp.data.data._id;
+            const buyer: IBuyer = resp.data.data;
+            const id = buyer._id!;
             setUserId(id);
             localStorage.setItem("buyerId", id);
+            goToHomeStep(buyer);
           } else {
             console.log("Show Alerta");
           }
         } else {
-          const id = resp.data._id;
+          const buyer: IBuyer = resp.data;
+          const id = buyer._id!;
           setUserId(id);
           localStorage.setItem("buyerId", id);
+          goToHomeStep(buyer);
         }
-        navigate("/products");
       } catch (error) {
         console.log(error);
       } finally {

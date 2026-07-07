@@ -30,7 +30,7 @@ const STATUS_LABELS: Record<DutyState, string> = {
 
 export default function Duties() {
   const navigate = useNavigate();
-  const { userId } = useContext(AppContext);
+  const { userId, defaultHome, homeLoading } = useContext(AppContext);
 
   const [duties, setDuties] = useState<IDuties[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -45,13 +45,19 @@ export default function Duties() {
       navigate("/");
       return;
     }
+    if (homeLoading) return;
+    if (defaultHome === "") {
+      navigate("/enter-home");
+      return;
+    }
     loadAll();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, defaultHome, homeLoading]);
 
   const loadAll = async () => {
     try {
       const [dutiesResp, cats, mkrs] = await Promise.all([
-        getDuties(userId),
+        getDuties(userId, defaultHome),
         getCategories(userId),
         getMakers(userId),
       ]);
@@ -65,7 +71,7 @@ export default function Duties() {
 
   const loadDuties = async () => {
     try {
-      const response = await getDuties(userId);
+      const response = await getDuties(userId, defaultHome);
       setDuties(response.data || []);
     } catch (error) {
       console.log(error);
@@ -94,7 +100,7 @@ export default function Duties() {
   const handleExecution = async (duty: IDuties) => {
     duty.history.unshift({ date: new Date() });
     try {
-      await updateDuty(duty);
+      await updateDuty(duty, defaultHome);
       await loadDuties();
     } catch (error) {
       console.log(error);

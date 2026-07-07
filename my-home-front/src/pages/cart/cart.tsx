@@ -18,11 +18,22 @@ export default function Cart() {
   const [phoneEditing, setPhoneEditing] = useState<boolean>(false);
   const [phoneInput, setPhoneInput] = useState<string>("");
 
-  const { userId, setQtItemCart } = useContext(AppContext);
+  const { userId, defaultHome, homeLoading, setQtItemCart } =
+    useContext(AppContext);
 
   useEffect(() => {
+    if (userId === "") {
+      navigate("/");
+      return;
+    }
+    if (homeLoading) return;
+    if (defaultHome === "") {
+      navigate("/enter-home");
+      return;
+    }
     loadBuyer();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, defaultHome, homeLoading]);
 
   const loadBuyer = async () => {
     const response = await getBuyer(userId);

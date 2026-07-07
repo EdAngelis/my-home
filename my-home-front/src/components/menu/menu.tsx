@@ -27,6 +27,7 @@ export default function Menu() {
 
   const hLogout = () => {
     setUserId("");
+    setDefaultHome("");
     localStorage.removeItem("buyerId");
     setOpen(false);
     navigate("/");

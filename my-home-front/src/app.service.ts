@@ -12,13 +12,17 @@ const createBuyer = async (buyer: IBuyer) => {
   return response;
 }
 
-const getProducts = async (userId: string) => {
-  const response = await api.get(`/products?createdByUserId=${userId}`);
+const getProducts = async (userId: string, homeId: string) => {
+  const response = await api.get(
+    `/products?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data.data;
 };
 
-const getDuties = async (userId: string) => {
-  const response = await api.get(`/duties?createdByUserId=${userId}`);
+const getDuties = async (userId: string, homeId: string) => {
+  const response = await api.get(
+    `/duties?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data;
 };
 
@@ -27,8 +31,8 @@ const createDuty = async (duty: IDuties) => {
   return response.data.data;
 };
 
-const deleteDuty = async (id: string) => {
-  const response = await api.delete(`/duties/${id}`);
+const deleteDuty = async (id: string, homeId: string) => {
+  const response = await api.delete(`/duties/${id}?home=${homeId}`);
   return response.data;
 };
 
@@ -82,8 +86,8 @@ const getBuyer = async (id: string) => {
   return response.data.data;
 };
 
-const deleteProduct = async (id: string) => {
-  const response = await api.delete(`/products/${id}`);
+const deleteProduct = async (id: string, homeId: string) => {
+  const response = await api.delete(`/products/${id}?home=${homeId}`);
   return response.data;
 }
 
@@ -92,8 +96,8 @@ const updateCart = async (buyer: IBuyer) => {
   return response.data.data;
 };
 
-const updateDuty = async (duty: IDuties) => {
-  const response = await api.patch(`/duties/${duty._id}`, duty);
+const updateDuty = async (duty: IDuties, homeId: string) => {
+  const response = await api.patch(`/duties/${duty._id}?home=${homeId}`, duty);
   return response.data.data;
 };
 
@@ -127,8 +131,12 @@ const sendWhatsapp = async (buyer: IBuyer) => {
   );
 };
 
-const updateProduct = async (_id: string, product: IProduct) => {
-  const response = await api.patch(`/products/${_id}`, product);
+const updateProduct = async (
+  _id: string,
+  homeId: string,
+  product: IProduct
+) => {
+  const response = await api.patch(`/products/${_id}?home=${homeId}`, product);
   return response.data.data;
 };
 

@@ -22,18 +22,29 @@ export default function Products() {
   const [alertOn, setAlertOn] = useState<boolean>(false);
   const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([]);
 
-  const { userId, setQtItemCart } = useContext(AppContext);
+  const { userId, defaultHome, homeLoading, setQtItemCart } =
+    useContext(AppContext);
 
   useEffect(() => {
-    userId !== "" ? loadBuyer() : goTo("/", null);
-  }, []);
+    if (userId === "") {
+      goTo("/", null);
+      return;
+    }
+    if (homeLoading) return;
+    if (defaultHome === "") {
+      navigate("/enter-home");
+    }
+  }, [userId, defaultHome, homeLoading]);
 
   useEffect(() => {
-    if (userId !== "") loadProducts();
-  }, [userId]);
+    if (userId !== "" && defaultHome !== "") {
+      loadBuyer();
+      loadProducts();
+    }
+  }, [userId, defaultHome]);
 
   const loadProducts = async () => {
-    const response = await getProducts(userId);
+    const response = await getProducts(userId, defaultHome);
     setProducts(response);
     setFilteredProducts(response);
   };
@@ -70,7 +81,7 @@ export default function Products() {
 
   const deleteProd = async (id: string) => {
     try {
-      await deleteProduct(id);
+      await deleteProduct(id, defaultHome);
       loadProducts();
     } catch (error) {
       console.log(error);
