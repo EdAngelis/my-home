@@ -12,6 +12,7 @@ interface IDuties {
   history: HistoryType[];
   description: string;
   createdByUserId?: string;
+  home: string;
   category?: string;
   makers?: string[];
   status?: "active" | "paused";

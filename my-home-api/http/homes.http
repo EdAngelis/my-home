@@ -1,0 +1,64 @@
+@baseUrl = http://localhost:3000
+@homeId = REPLACE_WITH_A_HOME_ID
+@userId = REPLACE_WITH_A_BUYER_ID
+@code = REPLACE_WITH_A_HOME_CODE
+
+### List the Homes a user belongs to — GET /homes?userId=
+GET {{baseUrl}}/homes?userId={{userId}}
+
+### Create a new Home — POST /homes
+POST {{baseUrl}}/homes
+Content-Type: application/json
+
+{
+  "name": "Angelis House",
+  "userId": "{{userId}}"
+}
+
+### Get a Home by id — GET /homes/:id
+GET {{baseUrl}}/homes/{{homeId}}
+
+### Join a Home by code — POST /homes/join
+POST {{baseUrl}}/homes/join
+Content-Type: application/json
+
+{
+  "code": "{{code}}",
+  "userId": "{{userId}}"
+}
+
+### Leave a Home (clears defaultHome only, keeps membership) — POST /homes/leave
+POST {{baseUrl}}/homes/leave
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}"
+}
+
+### Remove a user from a Home (unlinks membership both ways) — POST /homes/:homeId/remove-user
+POST {{baseUrl}}/homes/{{homeId}}/remove-user
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}"
+}
+
+### Set a user's default Home — POST /homes/set-default
+POST {{baseUrl}}/homes/set-default
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "homeId": "{{homeId}}"
+}
+
+### Rename a Home — PATCH /homes/:id
+PATCH {{baseUrl}}/homes/{{homeId}}
+Content-Type: application/json
+
+{
+  "name": "Renamed House"
+}
+
+### Delete a Home — DELETE /homes/:id
+DELETE {{baseUrl}}/homes/{{homeId}}

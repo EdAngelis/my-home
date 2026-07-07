@@ -2,15 +2,31 @@ import { Request, Response } from "express";
 import { response } from "../types/response-body.type";
 import { pushItem, pullItem } from "../repository/cart.repo";
 import { findOne } from "../repository/buyers.repo";
+import { findOne as findProduct } from "../repository/products.repo";
 import { IBuyer, Items } from "../models/buyer.model";
 import { WhatsMessageType } from "../types";
 
 const addItem = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { homeId } = req.query;
   try {
     const data: Items[] = req.body;
 
-    const result = await pushItem(id, data);
+    if (!homeId)
+      return response(res, 400, { message: "homeId is required", data: null });
+
+    for (const item of data) {
+      const productId =
+        typeof item.product === "string" ? item.product : item.product?._id;
+      const product = await findProduct(productId as string, homeId as string);
+      if (!product)
+        return response(res, 400, {
+          message: "Product does not belong to the given home",
+          data: null,
+        });
+    }
+
+    const result = await pushItem(id, homeId as string, data);
     if (!result)
       return response(res, 400, {
         message: "Failed to add item to cart",

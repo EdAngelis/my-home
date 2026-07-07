@@ -11,9 +11,9 @@ const findMany = async (query: any) => {
   }
 };
 
-const findOne = async (_id: string) => {
+const findOne = async (_id: string, home: string) => {
   try {
-    const product = Product.findById(_id);
+    const product = Product.findOne({ _id, home });
     return product;
   } catch (error) {
     throw error;
@@ -39,9 +39,9 @@ const createMany = async () => {
   }
 };
 
-const updateOne = async (_id: string, product: IProducts) => {
+const updateOne = async (_id: string, home: string, product: IProducts) => {
   try {
-    const newProduct = Product.findByIdAndUpdate(_id, product);
+    const newProduct = Product.findOneAndUpdate({ _id, home }, product);
     return newProduct;
   } catch (error) {
     throw error;
@@ -57,9 +57,9 @@ const updateMany = async (query: any, toUpdate: IProducts) => {
   }
 };
 
-const deleteOne = async (_id: string) => {
+const deleteOne = async (_id: string, home: string) => {
   try {
-    const response = Product.findByIdAndDelete(_id);
+    const response = Product.findOneAndDelete({ _id, home });
     return response;
   } catch (error) {
     throw error;

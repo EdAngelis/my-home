@@ -1,0 +1,90 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding: 0 20px 40px;
+}
+
+.container h1 {
+    color: #00641C;
+}
+
+.createButton {
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #00641C;
+    color: #BDFFD0;
+    font-size: 1rem;
+}
+
+.createButton:hover {
+    background-color: #3a9e5e;
+}
+
+.error {
+    color: #c15111;
+    margin: 0;
+}
+
+.empty {
+    color: #c15111;
+    margin-top: 10px;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: solid 1px #f9ab84;
+    border-radius: 5px;
+    padding: 4px 4px 4px 12px;
+}
+
+.cardButton {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 0;
+    text-align: left;
+}
+
+.cardButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.cardName {
+    color: #c15111;
+    font-size: 1.1rem;
+}
+
+.cardCode {
+    color: #f9ab84;
+    font-size: 0.9rem;
+}
+
+.remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}

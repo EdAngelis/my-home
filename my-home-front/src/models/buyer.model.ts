@@ -7,6 +7,7 @@ type Items = {
 
 type Cart = {
   status: string;
+  home?: string;
   items: Items[];
 };
 
@@ -15,6 +16,8 @@ interface IBuyer {
   cpf: string;
   marketPhone?: string,
   cart?: Cart;
+  homes?: string[];
+  defaultHome?: string;
 }
 
 export default IBuyer;

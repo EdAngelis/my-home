@@ -1,11 +1,11 @@
 import { Buyer } from "../models";
 import { Items } from "../models/buyer.model";
 
-const pushItem = async (id: string, data: Items[]) => {
+const pushItem = async (id: string, home: string, data: Items[]) => {
   try {
     const response = Buyer.updateOne(
       { _id: id },
-      { $push: { "cart.items": { $each: data } } }
+      { $push: { "cart.items": { $each: data } }, $set: { "cart.home": home } }
     );
 
     return response;

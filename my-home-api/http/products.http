@@ -1,19 +1,21 @@
 @baseUrl = http://localhost:3000
 @productId = REPLACE_WITH_A_PRODUCT_ID
+@homeId = REPLACE_WITH_A_HOME_ID
 
-### Get all products, optionally filtered by query params (e.g. ?category=Grãos)
-GET {{baseUrl}}/products
+### Get all products, scoped to a home (required) and optionally filtered further (e.g. &category=Grãos)
+GET {{baseUrl}}/products?home={{homeId}}
 # &category=Grãos
 
 ### Seed many products (no request body is read by this endpoint)
 GET {{baseUrl}}/products/create-many
 
-### Create a new product
+### Create a new product (home is required)
 POST {{baseUrl}}/products
 Content-Type: application/json
 
 {
   "createdByUserId": "REPLACE_WITH_A_BUYER_ID",
+  "home": "{{homeId}}",
   "name": "Arroz",
   "unit": "kg",
   "badge": "Tio João",
@@ -25,27 +27,27 @@ Content-Type: application/json
   "category": "Grãos"
 }
 
-### Get a single product by id
-GET {{baseUrl}}/products/{{productId}}
+### Get a single product by id (home is required and must match the product's home)
+GET {{baseUrl}}/products/{{productId}}?home={{homeId}}
 
-### Update a single product by id
-PATCH {{baseUrl}}/products/{{productId}}
+### Update a single product by id (home is required and must match the product's home)
+PATCH {{baseUrl}}/products/{{productId}}?home={{homeId}}
 Content-Type: application/json
 
 {
   "price": 27.5
 }
 
-### Bulk update products matching a query
-PATCH {{baseUrl}}/products?category=Grãos
+### Bulk update products matching a query (home is required)
+PATCH {{baseUrl}}/products?home={{homeId}}&category=Grãos
 Content-Type: application/json
 
 {
   "category": "Grãos e Cereais"
 }
 
-### Delete a single product by id
-DELETE {{baseUrl}}/products/{{productId}}
+### Delete a single product by id (home is required and must match the product's home)
+DELETE {{baseUrl}}/products/{{productId}}?home={{homeId}}
 
-### Bulk delete products matching a query
-DELETE {{baseUrl}}/products?category=Grãos
+### Bulk delete products matching a query (home is required)
+DELETE {{baseUrl}}/products?home={{homeId}}&category=Grãos
