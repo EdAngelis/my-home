@@ -5,6 +5,7 @@ import cartRoutes from "./cart.routes";
 import dutyRoutes from "./duties.routes";
 import categoriesRoutes from "./categories.routes";
 import makersRoutes from "./makers.routes";
+import homesRoutes from "./homes.routes";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/cart", cartRoutes);
 router.use("/duties", dutyRoutes);
 router.use("/categories", categoriesRoutes);
 router.use("/makers", makersRoutes);
+router.use("/homes", homesRoutes);
 
 export default router;

@@ -27,7 +27,7 @@ const generateCod = (name: string): string => {
 
 export default function CreateDuty() {
   const navigate = useNavigate();
-  const { userId } = useContext(AppContext);
+  const { userId, defaultHome, homeLoading } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -41,6 +41,11 @@ export default function CreateDuty() {
   const update = duty ? true : false;
 
   useEffect(() => {
+    if (homeLoading) return;
+    if (defaultHome === "") {
+      navigate("/enter-home");
+      return;
+    }
     loadOptions();
 
     reset({
@@ -51,7 +56,8 @@ export default function CreateDuty() {
     setCategory(duty?.category || "");
     setSelectedMakers(duty?.makers || []);
     setPaused(duty?.status === "paused");
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultHome, homeLoading]);
 
   const loadOptions = async () => {
     try {
@@ -75,7 +81,7 @@ export default function CreateDuty() {
     if (!window.confirm(`Delete duty "${duty.name}"?`)) return;
     try {
       setLoading(true);
-      await deleteDuty(duty._id);
+      await deleteDuty(duty._id, defaultHome);
       goTo("/duties");
     } catch (error) {
       console.log(error);
@@ -104,7 +110,7 @@ export default function CreateDuty() {
           makers: selectedMakers,
           status,
         };
-        await updateDuty(next);
+        await updateDuty(next, defaultHome);
       } else {
         const next: IDuties = {
           cod: generateCod(data.name),
@@ -114,6 +120,7 @@ export default function CreateDuty() {
           description: data.description,
           history: [],
           createdByUserId: userId,
+          home: defaultHome,
           category,
           makers: selectedMakers,
           status,

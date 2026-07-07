@@ -2,6 +2,7 @@ import { Document, Schema, model } from "mongoose";
 
 interface IProducts extends Document {
   createdByUserId: string;
+  home: string;
   name: string;
   unit: string;
   badge: string;
@@ -17,6 +18,7 @@ interface IProducts extends Document {
 
 const schema = new Schema({
   createdByUserId: { type: String },
+  home: { type: String, required: true },
   name: { type: String, required: true },
   unit: { type: String, required: true, enum: ["kg", "un"] },
   badge: { type: String },

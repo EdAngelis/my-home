@@ -14,6 +14,9 @@ const getDuties = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await findMany(query);
     if (!data) return response(res, 404, { message: "Duties not found", data });
 
@@ -25,8 +28,12 @@ const getDuties = async (req: Request, res: Response) => {
 };
 
 const getDuty = async (req: Request, res: Response) => {
+  const { home } = req.query;
   try {
-    const data = await findOne(req.params.id);
+    if (!home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await findOne(req.params.id, home as string);
 
     if (!data) return response(res, 404, { message: "Duty not found", data });
 
@@ -39,6 +46,9 @@ const getDuty = async (req: Request, res: Response) => {
 
 const createDuty = async (req: Request, res: Response) => {
   try {
+    if (!req.body.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await create(req.body);
 
     return response(res, 200, { message: "Duty created", data });
@@ -49,8 +59,12 @@ const createDuty = async (req: Request, res: Response) => {
 };
 
 const updateDuty = async (req: Request, res: Response) => {
+  const { home } = req.query;
   try {
-    const data = await updateOne(req.params.id, req.body);
+    if (!home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await updateOne(req.params.id, home as string, req.body);
 
     if (!data) return response(res, 404, { message: "Duty not found", data });
 
@@ -66,6 +80,9 @@ const updateDuties = async (req: Request, res: Response) => {
   const toUpdate = req.body;
 
   try {
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await updateMany(query, toUpdate);
     if (!data) return response(res, 404, { message: "Duties not found", data });
 
@@ -78,8 +95,12 @@ const updateDuties = async (req: Request, res: Response) => {
 
 const deleteDuty = async (req: Request, res: Response) => {
   const _id = req.params.id;
+  const { home } = req.query;
   try {
-    const data = await deleteOne(_id);
+    if (!home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await deleteOne(_id, home as string);
 
     if (!data) return response(res, 404, { message: "Duty not found", data });
 
@@ -94,6 +115,9 @@ const deleteDuties = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await deleteMany(query);
     if (!data) return response(res, 404, { message: "Duties not found", data });
 

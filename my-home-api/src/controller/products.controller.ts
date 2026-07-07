@@ -15,6 +15,9 @@ const getProducts = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await findMany(query);
     if (!data)
       return response(res, 404, { message: "Products not found", data });
@@ -27,8 +30,12 @@ const getProducts = async (req: Request, res: Response) => {
 };
 
 const getProduct = async (req: Request, res: Response) => {
+  const { home } = req.query;
   try {
-    const data = await findOne(req.params.id);
+    if (!home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await findOne(req.params.id, home as string);
 
     if (!data)
       return response(res, 404, { message: "Product not found", data });
@@ -42,6 +49,9 @@ const getProduct = async (req: Request, res: Response) => {
 
 const createProduct = async (req: Request, res: Response) => {
   try {
+    if (!req.body.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await create(req.body);
 
     return response(res, 200, { message: "Product created", data });
@@ -69,8 +79,12 @@ const createProducts = async (req: Request, res: Response) => {
 };
 
 const updateProduct = async (req: Request, res: Response) => {
+  const { home } = req.query;
   try {
-    const data = await updateOne(req.params.id, req.body);
+    if (!home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await updateOne(req.params.id, home as string, req.body);
 
     if (!data)
       return response(res, 404, { message: "Product not found", data });
@@ -87,6 +101,9 @@ const updateProducts = async (req: Request, res: Response) => {
   const toUpdate = req.body;
 
   try {
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await updateMany(query, toUpdate);
     if (!data)
       return response(res, 404, { message: "Products not found", data });
@@ -100,8 +117,12 @@ const updateProducts = async (req: Request, res: Response) => {
 
 const deleteProduct = async (req: Request, res: Response) => {
   const _id = req.params.id;
+  const { home } = req.query;
   try {
-    const data = await deleteOne(_id);
+    if (!home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await deleteOne(_id, home as string);
 
     if (!data)
       return response(res, 404, { message: "Product not found", data });
@@ -117,6 +138,9 @@ const deleteProducts = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await deleteMany(query);
     if (!data)
       return response(res, 404, { message: "Products not found", data });

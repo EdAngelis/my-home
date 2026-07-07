@@ -16,6 +16,7 @@ type Items = {
 
 type Cart = {
   status: string;
+  home?: string;
   items: Items[];
 };
 
@@ -23,13 +24,18 @@ interface IBuyer extends Document {
   cpf: string;
   marketPhone?: string;
   cart?: Cart;
+  homes?: string[];
+  defaultHome?: string;
 }
 
 const schema = new Schema({
   cpf: { type: String, required: true, unique: true },
   marketPhone: { type: String },
+  homes: [{ type: String }],
+  defaultHome: { type: String },
   cart: {
     status: { type: String },
+    home: { type: String },
     items: [
       {
         product: {

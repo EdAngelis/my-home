@@ -4,6 +4,7 @@ import IDuties from "./models/duties.model";
 import IProduct from "./models/products.model";
 import ICategory from "./models/category.model";
 import IMaker from "./models/maker.model";
+import IHome from "./models/home.model";
 
 const createBuyer = async (buyer: IBuyer) => {
 
@@ -11,13 +12,17 @@ const createBuyer = async (buyer: IBuyer) => {
   return response;
 }
 
-const getProducts = async (userId: string) => {
-  const response = await api.get(`/products?createdByUserId=${userId}`);
+const getProducts = async (userId: string, homeId: string) => {
+  const response = await api.get(
+    `/products?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data.data;
 };
 
-const getDuties = async (userId: string) => {
-  const response = await api.get(`/duties?createdByUserId=${userId}`);
+const getDuties = async (userId: string, homeId: string) => {
+  const response = await api.get(
+    `/duties?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data;
 };
 
@@ -26,8 +31,8 @@ const createDuty = async (duty: IDuties) => {
   return response.data.data;
 };
 
-const deleteDuty = async (id: string) => {
-  const response = await api.delete(`/duties/${id}`);
+const deleteDuty = async (id: string, homeId: string) => {
+  const response = await api.delete(`/duties/${id}?home=${homeId}`);
   return response.data;
 };
 
@@ -81,8 +86,8 @@ const getBuyer = async (id: string) => {
   return response.data.data;
 };
 
-const deleteProduct = async (id: string) => {
-  const response = await api.delete(`/products/${id}`);
+const deleteProduct = async (id: string, homeId: string) => {
+  const response = await api.delete(`/products/${id}?home=${homeId}`);
   return response.data;
 }
 
@@ -91,8 +96,8 @@ const updateCart = async (buyer: IBuyer) => {
   return response.data.data;
 };
 
-const updateDuty = async (duty: IDuties) => {
-  const response = await api.patch(`/duties/${duty._id}`, duty);
+const updateDuty = async (duty: IDuties, homeId: string) => {
+  const response = await api.patch(`/duties/${duty._id}?home=${homeId}`, duty);
   return response.data.data;
 };
 
@@ -126,8 +131,48 @@ const sendWhatsapp = async (buyer: IBuyer) => {
   );
 };
 
-const updateProduct = async (_id: string, product: IProduct) => {
-  const response = await api.patch(`/products/${_id}`, product);
+const updateProduct = async (
+  _id: string,
+  homeId: string,
+  product: IProduct
+) => {
+  const response = await api.patch(`/products/${_id}?home=${homeId}`, product);
+  return response.data.data;
+};
+
+const listHomes = async (userId: string): Promise<IHome[]> => {
+  const response = await api.get(`/homes?userId=${userId}`);
+  return response.data.data;
+};
+
+const createHome = async (name: string, userId: string): Promise<IHome> => {
+  const response = await api.post("/homes", { name, userId });
+  return response.data.data;
+};
+
+const joinHome = async (code: string, userId: string): Promise<IHome> => {
+  const response = await api.post("/homes/join", { code, userId });
+  return response.data.data;
+};
+
+const leaveHome = async (userId: string): Promise<IBuyer> => {
+  const response = await api.post("/homes/leave", { userId });
+  return response.data.data;
+};
+
+const removeHomeFromUser = async (
+  homeId: string,
+  userId: string
+): Promise<IHome> => {
+  const response = await api.post(`/homes/${homeId}/remove-user`, { userId });
+  return response.data.data;
+};
+
+const setDefaultHome = async (
+  userId: string,
+  homeId: string
+): Promise<IBuyer> => {
+  const response = await api.post("/homes/set-default", { userId, homeId });
   return response.data.data;
 };
 
@@ -152,5 +197,11 @@ export {
   createProduct,
   createBuyer,
   getBuyerByCpf,
-  updateProduct
+  updateProduct,
+  listHomes,
+  createHome,
+  joinHome,
+  leaveHome,
+  removeHomeFromUser,
+  setDefaultHome
 };
