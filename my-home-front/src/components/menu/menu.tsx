@@ -1,13 +1,15 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context";
+import { leaveHome } from "../../app.service";
 import styles from "./menu.module.css";
 
 const MARKET_PATHS = ["/products", "/cart", "/create-product"];
 const DUTIES_PATHS = ["/duties", "/create-duty", "/categories", "/makers"];
 
 export default function Menu() {
-  const { qtItemCart, userId, setUserId } = useContext(AppContext);
+  const { qtItemCart, userId, setUserId, defaultHome, setDefaultHome } =
+    useContext(AppContext);
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -33,6 +35,17 @@ export default function Menu() {
   const goTo = (path: string) => {
     setOpen(false);
     navigate(path);
+  };
+
+  const hLeaveHome = async () => {
+    try {
+      await leaveHome(userId);
+      setDefaultHome("");
+      setOpen(false);
+      navigate("/enter-home");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -62,6 +75,11 @@ export default function Menu() {
               >
                 Duties
               </button>
+              {defaultHome && (
+                <button className={styles.popupItem} onClick={hLeaveHome}>
+                  Leave home
+                </button>
+              )}
             </div>
           )}
         </div>

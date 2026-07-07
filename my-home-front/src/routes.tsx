@@ -10,6 +10,8 @@ import CreateProduct from "./pages/products/create/create_product";
 import Home from "./pages/home/home";
 import Menu from "./components/menu/menu";
 import Onboarding from "./pages/onboarding/onboarding";
+import EnterHome from "./pages/enter-home/enter-home";
+import CreateHome from "./pages/create-home/create_home";
 
 export interface RouteObject {
   caseSensitive?: boolean;
@@ -30,6 +32,8 @@ const routes = [
     children: [
       { index: true, element: <Home /> },
       { path: "home", element: <Home /> },
+      { path: "enter-home", element: <EnterHome /> },
+      { path: "create-home", element: <CreateHome /> },
       { path: "duties", element: <Duties /> },
       { path: "create-duty", element: <CreateDuty /> },
       { path: "categories", element: <Categories /> },

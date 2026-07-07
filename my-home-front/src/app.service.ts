@@ -4,6 +4,7 @@ import IDuties from "./models/duties.model";
 import IProduct from "./models/products.model";
 import ICategory from "./models/category.model";
 import IMaker from "./models/maker.model";
+import IHome from "./models/home.model";
 
 const createBuyer = async (buyer: IBuyer) => {
 
@@ -131,6 +132,42 @@ const updateProduct = async (_id: string, product: IProduct) => {
   return response.data.data;
 };
 
+const listHomes = async (userId: string): Promise<IHome[]> => {
+  const response = await api.get(`/homes?userId=${userId}`);
+  return response.data.data;
+};
+
+const createHome = async (name: string, userId: string): Promise<IHome> => {
+  const response = await api.post("/homes", { name, userId });
+  return response.data.data;
+};
+
+const joinHome = async (code: string, userId: string): Promise<IHome> => {
+  const response = await api.post("/homes/join", { code, userId });
+  return response.data.data;
+};
+
+const leaveHome = async (userId: string): Promise<IBuyer> => {
+  const response = await api.post("/homes/leave", { userId });
+  return response.data.data;
+};
+
+const removeHomeFromUser = async (
+  homeId: string,
+  userId: string
+): Promise<IHome> => {
+  const response = await api.post(`/homes/${homeId}/remove-user`, { userId });
+  return response.data.data;
+};
+
+const setDefaultHome = async (
+  userId: string,
+  homeId: string
+): Promise<IBuyer> => {
+  const response = await api.post("/homes/set-default", { userId, homeId });
+  return response.data.data;
+};
+
 export {
   getProducts,
   getBuyer,
@@ -152,5 +189,11 @@ export {
   createProduct,
   createBuyer,
   getBuyerByCpf,
-  updateProduct
+  updateProduct,
+  listHomes,
+  createHome,
+  joinHome,
+  leaveHome,
+  removeHomeFromUser,
+  setDefaultHome
 };
