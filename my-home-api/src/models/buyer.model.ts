@@ -23,11 +23,15 @@ interface IBuyer extends Document {
   cpf: string;
   marketPhone?: string;
   cart?: Cart;
+  homes?: string[];
+  defaultHome?: string;
 }
 
 const schema = new Schema({
   cpf: { type: String, required: true, unique: true },
   marketPhone: { type: String },
+  homes: [{ type: String }],
+  defaultHome: { type: String },
   cart: {
     status: { type: String },
     items: [
