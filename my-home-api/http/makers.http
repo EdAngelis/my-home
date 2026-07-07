@@ -1,40 +1,42 @@
 @baseUrl = http://localhost:3000
 @makerId = REPLACE_WITH_A_MAKER_ID
 @userId = REPLACE_WITH_A_BUYER_ID
+@homeId = REPLACE_WITH_A_HOME_ID
 
-### List makers (scoped per user via query) — GET /makers
-GET {{baseUrl}}/makers?createdByUserId={{userId}}
+### List makers scoped per user and home
+GET {{baseUrl}}/makers?createdByUserId={{userId}}&home={{homeId}}
 
-### Create a new maker — POST /makers/create
+### Create a new maker
 POST {{baseUrl}}/makers/create
 Content-Type: application/json
 
 {
   "name": "Alice",
-  "createdByUserId": "{{userId}}"
+  "createdByUserId": "{{userId}}",
+  "home": "{{homeId}}"
 }
 
-### Get a maker by id — GET /makers/:id
-GET {{baseUrl}}/makers/{{makerId}}
+### Get a maker by id
+GET {{baseUrl}}/makers/{{makerId}}?createdByUserId={{userId}}&home={{homeId}}
 
-### Update a maker by id — PATCH /makers/:id
-PATCH {{baseUrl}}/makers/{{makerId}}
+### Update a maker by id
+PATCH {{baseUrl}}/makers/{{makerId}}?createdByUserId={{userId}}&home={{homeId}}
 Content-Type: application/json
 
 {
   "name": "Alice B."
 }
 
-### Bulk-update makers matching a query — PATCH /makers
-PATCH {{baseUrl}}/makers?createdByUserId={{userId}}
+### Bulk-update makers matching a scoped query
+PATCH {{baseUrl}}/makers?createdByUserId={{userId}}&home={{homeId}}
 Content-Type: application/json
 
 {
   "name": "Renamed"
 }
 
-### Delete a maker by id (cascades: pulls it from every duty's makers array) — DELETE /makers/:id
-DELETE {{baseUrl}}/makers/{{makerId}}
+### Delete a maker by id
+DELETE {{baseUrl}}/makers/{{makerId}}?createdByUserId={{userId}}&home={{homeId}}
 
-### Bulk-delete makers matching a query — DELETE /makers
-DELETE {{baseUrl}}/makers?createdByUserId={{userId}}
+### Bulk-delete makers matching a scoped query
+DELETE {{baseUrl}}/makers?createdByUserId={{userId}}&home={{homeId}}

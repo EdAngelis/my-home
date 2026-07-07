@@ -36,7 +36,7 @@ export default function Cart() {
   }, [userId, defaultHome, homeLoading]);
 
   const loadBuyer = async () => {
-    const response = await getBuyer(userId);
+    const response = await getBuyer(userId, defaultHome);
     await setBuyer(response);
   };
 
@@ -77,7 +77,7 @@ export default function Cart() {
   const hUpdateBuyer = async (buyer: IBuyer) => {
     if (!buyer) return;
     try {
-      const resp = await updateCart(buyer!);
+      const resp = await updateCart(buyer!, defaultHome);
       const qtItems = resp.cart?.items?.length || 0;
       setQtItemCart(qtItems);
       setBuyer(resp);

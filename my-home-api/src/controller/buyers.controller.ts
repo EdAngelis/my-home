@@ -11,6 +11,31 @@ import {
   deleteMany,
   getByCpf,
 } from "../repository/buyers.repo";
+import { Product } from "../models";
+
+const scopedBuyerCart = (buyer: any, home?: string) => {
+  if (!home) return buyer;
+
+  const data = buyer.toObject ? buyer.toObject() : buyer;
+  if (data.cart?.home !== home) {
+    data.cart = { status: data.cart?.status, home, items: [] };
+  }
+
+  return data;
+};
+
+const cartProductsBelongToHome = async (cart: any, home: string) => {
+  const productIds = (cart?.items || [])
+    .map((item: any) =>
+      typeof item.product === "string" ? item.product : item.product?._id
+    )
+    .filter(Boolean);
+
+  if (productIds.length === 0) return true;
+
+  const count = await Product.countDocuments({ _id: { $in: productIds }, home });
+  return count === productIds.length;
+};
 
 const  signIn = async ( req: Request, res: Response) => {
    const { cpf } = req.query;
@@ -40,12 +65,16 @@ const getBuyers = async (req: Request, res: Response) => {
 };
 
 const getBuyer = async (req: Request, res: Response) => {
+  const { home } = req.query;
   try {
     const data = await findOne(req.params.id);
 
     if (!data) return response(res, 404, { message: "Buyer not found", data });
 
-    return response(res, 200, { message: "Buyer found", data });
+    return response(res, 200, {
+      message: "Buyer found",
+      data: scopedBuyerCart(data, home as string | undefined),
+    });
   } catch (error) {
     console.log(error);
     return response(res, 500, { message: "Error", data: error });
@@ -83,12 +112,33 @@ const createBuyers = async (req: Request, res: Response) => {
 
 const updateBuyer = async (req: Request, res: Response) => {
   const body = req.body;
+  const { home } = req.query;
   try {
+    if (body.cart) {
+      if (!home)
+        return response(res, 400, { message: "home is required", data: null });
+
+      const cartIsScoped = await cartProductsBelongToHome(
+        body.cart,
+        home as string
+      );
+      if (!cartIsScoped)
+        return response(res, 400, {
+          message: "Cart products must belong to the given home",
+          data: null,
+        });
+
+      body.cart.home = home;
+    }
+
     const data = await updateOne(req.params.id, body);
 
     if (!data) return response(res, 404, { message: "Buyer not found", data });
 
-    return response(res, 200, { message: "Buyer updated", data });
+    return response(res, 200, {
+      message: "Buyer updated",
+      data: scopedBuyerCart(data, home as string | undefined),
+    });
   } catch (error) {
     console.log(error);
     return response(res, 500, { message: "Error", data: error });

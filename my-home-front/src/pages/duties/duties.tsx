@@ -58,8 +58,8 @@ export default function Duties() {
     try {
       const [dutiesResp, cats, mkrs] = await Promise.all([
         getDuties(userId, defaultHome),
-        getCategories(userId),
-        getMakers(userId),
+        getCategories(userId, defaultHome),
+        getMakers(userId, defaultHome),
       ]);
       setDuties(dutiesResp.data || []);
       setCategories(cats || []);

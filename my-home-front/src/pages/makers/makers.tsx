@@ -8,7 +8,7 @@ import styles from "./makers.module.css";
 
 export default function Makers() {
   const navigate = useNavigate();
-  const { userId } = useContext(AppContext);
+  const { userId, defaultHome, homeLoading } = useContext(AppContext);
   const [makers, setMakers] = useState<IMaker[]>([]);
   const [name, setName] = useState<string>("");
 
@@ -17,12 +17,18 @@ export default function Makers() {
       navigate("/");
       return;
     }
+    if (homeLoading) return;
+    if (defaultHome === "") {
+      navigate("/enter-home");
+      return;
+    }
     loadMakers();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, defaultHome, homeLoading]);
 
   const loadMakers = async () => {
     try {
-      const response = await getMakers(userId);
+      const response = await getMakers(userId, defaultHome);
       setMakers(response || []);
     } catch (error) {
       console.log(error);
@@ -32,7 +38,11 @@ export default function Makers() {
   const handleAdd = async () => {
     if (!name.trim()) return;
     try {
-      await createMaker({ name: name.trim(), createdByUserId: userId });
+      await createMaker({
+        name: name.trim(),
+        createdByUserId: userId,
+        home: defaultHome,
+      });
       setName("");
       loadMakers();
     } catch (error) {
@@ -43,7 +53,7 @@ export default function Makers() {
   const handleDelete = async (id?: string) => {
     if (!id) return;
     try {
-      await deleteMaker(id);
+      await deleteMaker(id, userId, defaultHome);
       loadMakers();
     } catch (error) {
       console.log(error);

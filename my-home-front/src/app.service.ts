@@ -36,8 +36,10 @@ const deleteDuty = async (id: string, homeId: string) => {
   return response.data;
 };
 
-const getCategories = async (userId: string) => {
-  const response = await api.get(`/categories?createdByUserId=${userId}`);
+const getCategories = async (userId: string, homeId: string) => {
+  const response = await api.get(
+    `/categories?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data.data;
 };
 
@@ -46,18 +48,25 @@ const createCategory = async (category: ICategory) => {
   return response.data.data;
 };
 
-const updateCategory = async (category: ICategory) => {
-  const response = await api.patch(`/categories/${category._id}`, category);
+const updateCategory = async (category: ICategory, homeId: string) => {
+  const response = await api.patch(
+    `/categories/${category._id}?createdByUserId=${category.createdByUserId}&home=${homeId}`,
+    category
+  );
   return response.data.data;
 };
 
-const deleteCategory = async (id: string) => {
-  const response = await api.delete(`/categories/${id}`);
+const deleteCategory = async (id: string, userId: string, homeId: string) => {
+  const response = await api.delete(
+    `/categories/${id}?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data;
 };
 
-const getMakers = async (userId: string) => {
-  const response = await api.get(`/makers?createdByUserId=${userId}`);
+const getMakers = async (userId: string, homeId: string) => {
+  const response = await api.get(
+    `/makers?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data.data;
 };
 
@@ -66,13 +75,18 @@ const createMaker = async (maker: IMaker) => {
   return response.data.data;
 };
 
-const updateMaker = async (maker: IMaker) => {
-  const response = await api.patch(`/makers/${maker._id}`, maker);
+const updateMaker = async (maker: IMaker, homeId: string) => {
+  const response = await api.patch(
+    `/makers/${maker._id}?createdByUserId=${maker.createdByUserId}&home=${homeId}`,
+    maker
+  );
   return response.data.data;
 };
 
-const deleteMaker = async (id: string) => {
-  const response = await api.delete(`/makers/${id}`);
+const deleteMaker = async (id: string, userId: string, homeId: string) => {
+  const response = await api.delete(
+    `/makers/${id}?createdByUserId=${userId}&home=${homeId}`
+  );
   return response.data;
 };
 
@@ -81,8 +95,10 @@ const getBuyerByCpf = async (cpf: string) => {
   return response.data;
 };
 
-const getBuyer = async (id: string) => {
-  const response = await api.get(`/buyers/${id}`);
+const getBuyer = async (id: string, homeId?: string) => {
+  const response = await api.get(
+    `/buyers/${id}${homeId ? `?home=${homeId}` : ""}`
+  );
   return response.data.data;
 };
 
@@ -91,8 +107,8 @@ const deleteProduct = async (id: string, homeId: string) => {
   return response.data;
 }
 
-const updateCart = async (buyer: IBuyer) => {
-  const response = await api.patch(`/buyers/${buyer._id}`, buyer);
+const updateCart = async (buyer: IBuyer, homeId: string) => {
+  const response = await api.patch(`/buyers/${buyer._id}?home=${homeId}`, buyer);
   return response.data.data;
 };
 

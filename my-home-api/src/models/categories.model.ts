@@ -3,6 +3,7 @@ import { Document, Schema, model } from "mongoose";
 interface ICategory extends Document {
   name: string;
   createdByUserId?: string;
+  home: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -10,6 +11,7 @@ interface ICategory extends Document {
 const schema = new Schema({
   name: { type: String, required: true },
   createdByUserId: { type: String },
+  home: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

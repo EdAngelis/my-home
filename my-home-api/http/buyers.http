@@ -1,7 +1,8 @@
-@baseUrl =  https://1bs08vxx5e.execute-api.us-east-1.amazonaws.com
+@baseUrl = https://1bs08vxx5e.execute-api.us-east-1.amazonaws.com
 @buyerId = 12345678900
+@homeId = REPLACE_WITH_A_HOME_ID
 
-### Find a buyer by CPF (used as the "sign in" check)
+### Find a buyer by CPF (used as the sign-in check)
 GET {{baseUrl}}/buyers/signIn?cpf=12345678900
 
 ### Create many buyers at once
@@ -21,11 +22,11 @@ Content-Type: application/json
   "cpf": "12345678900"
 }
 
-### Get a single buyer by id (cart.items.product populated)
-GET {{baseUrl}}/buyers/{{buyerId}}
+### Get a single buyer by id (cart.items.product populated and home-scoped)
+GET {{baseUrl}}/buyers/{{buyerId}}?home={{homeId}}
 
-### Update a single buyer by id (e.g. persist cart changes)
-PATCH {{baseUrl}}/buyers/{{buyerId}}
+### Update a single buyer by id (e.g. persist home-scoped cart changes)
+PATCH {{baseUrl}}/buyers/{{buyerId}}?home={{homeId}}
 Content-Type: application/json
 
 {
