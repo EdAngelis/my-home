@@ -1,13 +1,12 @@
 import { Router } from "express";
 import {
   getHomes,
-  getUserHomes,
   getHome,
   postCreateHome,
   postJoinHome,
   postLeaveHome,
-  deleteHomeUser,
-  patchDefaultHome,
+  postRemoveUser,
+  postSetDefaultHome,
   updateHome,
   updateHomes,
   deleteHome,
@@ -17,15 +16,14 @@ import {
 const router = Router();
 
 router.get("/", getHomes);
-router.get("/user/:userId", getUserHomes);
-router.post("/create", postCreateHome);
+router.post("/", postCreateHome);
 router.post("/join", postJoinHome);
 router.post("/leave", postLeaveHome);
-router.patch("/default", patchDefaultHome);
+router.post("/set-default", postSetDefaultHome);
+router.post("/:homeId/remove-user", postRemoveUser);
 router.get("/:id", getHome);
 router.patch("/:id", updateHome);
 router.patch("/", updateHomes);
-router.delete("/:id/users/:userId", deleteHomeUser);
 router.delete("/:id", deleteHome);
 router.delete("/", deleteHomes);
 

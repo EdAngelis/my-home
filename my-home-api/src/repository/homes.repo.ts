@@ -1,18 +1,6 @@
 import { Home, Buyer } from "../models";
 import { IHome } from "../models/home.model";
 
-const generateCode = async (): Promise<string> => {
-  let code = "";
-  let exists = true;
-
-  while (exists) {
-    code = Math.floor(1000 + Math.random() * 9000).toString();
-    exists = !!(await Home.findOne({ code }));
-  }
-
-  return code;
-};
-
 const findMany = async (query: any) => {
   try {
     const homes = await Home.find(query);
@@ -85,20 +73,36 @@ const deleteMany = async (query: any) => {
   }
 };
 
+// Only 10,000 possible 4-digit codes ("0000"-"9999"). Retrying past a
+// duplicate-key error keeps creation correct under a race, but the small key
+// space means collisions become more likely as more Homes exist.
+const MAX_CODE_ATTEMPTS = 10;
+
+const generateCode = () =>
+  Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "0");
+
 const createHome = async (name: string, userId: string) => {
-  try {
-    const code = await generateCode();
-    const home = await Home.create({ name, code, users: [userId] });
+  let home;
 
-    await Buyer.findByIdAndUpdate(userId, {
-      $addToSet: { homes: home._id },
-      defaultHome: home._id,
-    });
-
-    return home;
-  } catch (error) {
-    throw error;
+  for (let attempt = 0; attempt < MAX_CODE_ATTEMPTS; attempt++) {
+    try {
+      home = await Home.create({ name, code: generateCode(), users: [userId] });
+      break;
+    } catch (error: any) {
+      if (error?.code !== 11000) throw error;
+    }
   }
+
+  if (!home) throw new Error("Could not generate a unique Home code");
+
+  await Buyer.findByIdAndUpdate(userId, {
+    $addToSet: { homes: home._id },
+    defaultHome: home._id,
+  });
+
+  return home;
 };
 
 const joinHome = async (code: string, userId: string) => {
@@ -122,6 +126,19 @@ const joinHome = async (code: string, userId: string) => {
   }
 };
 
+const clearDefaultHome = async (userId: string) => {
+  try {
+    const buyer = await Buyer.findByIdAndUpdate(
+      userId,
+      { defaultHome: "" },
+      { new: true }
+    );
+    return buyer;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const removeUserFromHome = async (homeId: string, userId: string) => {
   try {
     const home = await Home.findByIdAndUpdate(
@@ -130,15 +147,16 @@ const removeUserFromHome = async (homeId: string, userId: string) => {
       { new: true }
     );
 
+    if (!home) return null;
+
     const buyer = await Buyer.findByIdAndUpdate(
       userId,
       { $pull: { homes: homeId } },
       { new: true }
     );
 
-    if (buyer && buyer.defaultHome === homeId) {
-      const nextDefault = buyer.homes?.[0] ?? "";
-      await Buyer.findByIdAndUpdate(userId, { defaultHome: nextDefault });
+    if (buyer?.defaultHome === homeId) {
+      await Buyer.findByIdAndUpdate(userId, { defaultHome: "" });
     }
 
     return home;
@@ -183,6 +201,7 @@ export {
   deleteMany,
   createHome,
   joinHome,
+  clearDefaultHome,
   removeUserFromHome,
   listUserHomes,
   setDefaultHome,

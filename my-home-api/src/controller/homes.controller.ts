@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { response } from "../types/response-body.type";
 import {
-  findMany,
   findOne,
   updateOne,
   updateMany,
@@ -9,31 +8,20 @@ import {
   deleteMany,
   createHome,
   joinHome,
+  clearDefaultHome,
   removeUserFromHome,
   listUserHomes,
   setDefaultHome,
 } from "../repository/homes.repo";
 
 const getHomes = async (req: Request, res: Response) => {
-  const query = req.query;
+  const { userId } = req.query;
 
   try {
-    const data = await findMany(query);
-    if (!data) return response(res, 404, { message: "Homes not found", data });
+    if (!userId)
+      return response(res, 400, { message: "userId is required", data: null });
 
-    return response(res, 200, { message: "All Homes", data });
-  } catch (error) {
-    console.log(error);
-    return response(res, 500, { message: "Error", data: error });
-  }
-};
-
-const getUserHomes = async (req: Request, res: Response) => {
-  const { userId } = req.params;
-
-  try {
-    const data = await listUserHomes(userId);
-    if (!data) return response(res, 404, { message: "Homes not found", data });
+    const data = await listUserHomes(userId as string);
 
     return response(res, 200, { message: "User Homes", data });
   } catch (error) {
@@ -84,25 +72,26 @@ const postJoinHome = async (req: Request, res: Response) => {
 };
 
 const postLeaveHome = async (req: Request, res: Response) => {
-  const { homeId, userId } = req.body;
+  const { userId } = req.body;
 
   try {
-    const data = await removeUserFromHome(homeId, userId);
+    const data = await clearDefaultHome(userId);
 
-    if (!data) return response(res, 404, { message: "Home not found", data });
+    if (!data) return response(res, 404, { message: "Buyer not found", data });
 
-    return response(res, 200, { message: "Home left", data });
+    return response(res, 200, { message: "Default Home cleared", data });
   } catch (error) {
     console.log(error);
     return response(res, 500, { message: "Error", data: error });
   }
 };
 
-const deleteHomeUser = async (req: Request, res: Response) => {
-  const { id, userId } = req.params;
+const postRemoveUser = async (req: Request, res: Response) => {
+  const { homeId } = req.params;
+  const { userId } = req.body;
 
   try {
-    const data = await removeUserFromHome(id, userId);
+    const data = await removeUserFromHome(homeId, userId);
 
     if (!data) return response(res, 404, { message: "Home not found", data });
 
@@ -113,7 +102,7 @@ const deleteHomeUser = async (req: Request, res: Response) => {
   }
 };
 
-const patchDefaultHome = async (req: Request, res: Response) => {
+const postSetDefaultHome = async (req: Request, res: Response) => {
   const { userId, homeId } = req.body;
 
   try {
@@ -190,13 +179,12 @@ const deleteHomes = async (req: Request, res: Response) => {
 
 export {
   getHomes,
-  getUserHomes,
   getHome,
   postCreateHome,
   postJoinHome,
   postLeaveHome,
-  deleteHomeUser,
-  patchDefaultHome,
+  postRemoveUser,
+  postSetDefaultHome,
   updateHome,
   updateHomes,
   deleteHome,
