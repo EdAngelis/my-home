@@ -12,24 +12,19 @@ import {
 import { Duty } from "../models";
 
 const getScope = (req: Request) => {
-  const { createdByUserId, home } = req.query;
-  if (!createdByUserId || !home) return null;
-  return { createdByUserId, home };
+  const { home } = req.query;
+  if (!home) return null;
+  return { home };
 };
 
 const getCategories = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
-    if (!query.createdByUserId)
-      return response(res, 400, {
-        message: "createdByUserId is required",
-        data: null,
-      });
     if (!query.home)
       return response(res, 400, { message: "home is required", data: null });
 
-    const data = await findMany(query);
+    const data = await findMany({ home: query.home });
     if (!data)
       return response(res, 404, { message: "Categories not found", data });
 
@@ -45,7 +40,7 @@ const getCategory = async (req: Request, res: Response) => {
     const scope = getScope(req);
     if (!scope)
       return response(res, 400, {
-        message: "createdByUserId and home are required",
+        message: "home is required",
         data: null,
       });
 
@@ -85,13 +80,15 @@ const updateCategory = async (req: Request, res: Response) => {
     const scope = getScope(req);
     if (!scope)
       return response(res, 400, {
-        message: "createdByUserId and home are required",
+        message: "home is required",
         data: null,
       });
 
+    const category = { ...req.body };
+    delete category.createdByUserId;
     const data = await updateOne(req.params.id, scope, {
-      ...req.body,
-      ...scope,
+      ...category,
+      home: scope.home,
     });
 
     if (!data)
@@ -109,19 +106,18 @@ const updateCategories = async (req: Request, res: Response) => {
   const toUpdate = req.body;
 
   try {
-    if (!query.createdByUserId)
-      return response(res, 400, {
-        message: "createdByUserId is required",
-        data: null,
-      });
     if (!query.home)
       return response(res, 400, { message: "home is required", data: null });
 
-    const data = await updateMany(query, {
-      ...toUpdate,
-      createdByUserId: query.createdByUserId,
+    const category = { ...toUpdate };
+    delete category.createdByUserId;
+    const data = await updateMany(
+      { home: query.home },
+      {
+      ...category,
       home: query.home,
-    });
+      }
+    );
     if (!data)
       return response(res, 404, { message: "Categories not found", data });
 
@@ -138,7 +134,7 @@ const deleteCategory = async (req: Request, res: Response) => {
     const scope = getScope(req);
     if (!scope)
       return response(res, 400, {
-        message: "createdByUserId and home are required",
+        message: "home is required",
         data: null,
       });
 
@@ -161,15 +157,10 @@ const deleteCategories = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
-    if (!query.createdByUserId)
-      return response(res, 400, {
-        message: "createdByUserId is required",
-        data: null,
-      });
     if (!query.home)
       return response(res, 400, { message: "home is required", data: null });
 
-    const data = await deleteMany(query);
+    const data = await deleteMany({ home: query.home });
     if (!data)
       return response(res, 404, { message: "Categories not found", data });
 

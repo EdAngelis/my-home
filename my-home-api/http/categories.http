@@ -3,8 +3,8 @@
 @userId = REPLACE_WITH_A_BUYER_ID
 @homeId = REPLACE_WITH_A_HOME_ID
 
-### List categories scoped per user and home
-GET {{baseUrl}}/categories?createdByUserId={{userId}}&home={{homeId}}
+### List categories scoped per home
+GET {{baseUrl}}/categories?home={{homeId}}
 
 ### Create a new category
 POST {{baseUrl}}/categories/create
@@ -17,10 +17,10 @@ Content-Type: application/json
 }
 
 ### Get a category by id
-GET {{baseUrl}}/categories/{{categoryId}}?createdByUserId={{userId}}&home={{homeId}}
+GET {{baseUrl}}/categories/{{categoryId}}?home={{homeId}}
 
 ### Update a category by id
-PATCH {{baseUrl}}/categories/{{categoryId}}?createdByUserId={{userId}}&home={{homeId}}
+PATCH {{baseUrl}}/categories/{{categoryId}}?home={{homeId}}
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### Bulk-update categories matching a scoped query
-PATCH {{baseUrl}}/categories?createdByUserId={{userId}}&home={{homeId}}
+PATCH {{baseUrl}}/categories?home={{homeId}}
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 }
 
 ### Delete a category by id
-DELETE {{baseUrl}}/categories/{{categoryId}}?createdByUserId={{userId}}&home={{homeId}}
+DELETE {{baseUrl}}/categories/{{categoryId}}?home={{homeId}}
 
 ### Bulk-delete categories matching a scoped query
-DELETE {{baseUrl}}/categories?createdByUserId={{userId}}&home={{homeId}}
+DELETE {{baseUrl}}/categories?home={{homeId}}

@@ -3,8 +3,8 @@
 @userId = REPLACE_WITH_A_BUYER_ID
 @homeId = REPLACE_WITH_A_HOME_ID
 
-### List makers scoped per user and home
-GET {{baseUrl}}/makers?createdByUserId={{userId}}&home={{homeId}}
+### List makers scoped per home
+GET {{baseUrl}}/makers?home={{homeId}}
 
 ### Create a new maker
 POST {{baseUrl}}/makers/create
@@ -17,10 +17,10 @@ Content-Type: application/json
 }
 
 ### Get a maker by id
-GET {{baseUrl}}/makers/{{makerId}}?createdByUserId={{userId}}&home={{homeId}}
+GET {{baseUrl}}/makers/{{makerId}}?home={{homeId}}
 
 ### Update a maker by id
-PATCH {{baseUrl}}/makers/{{makerId}}?createdByUserId={{userId}}&home={{homeId}}
+PATCH {{baseUrl}}/makers/{{makerId}}?home={{homeId}}
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### Bulk-update makers matching a scoped query
-PATCH {{baseUrl}}/makers?createdByUserId={{userId}}&home={{homeId}}
+PATCH {{baseUrl}}/makers?home={{homeId}}
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 }
 
 ### Delete a maker by id
-DELETE {{baseUrl}}/makers/{{makerId}}?createdByUserId={{userId}}&home={{homeId}}
+DELETE {{baseUrl}}/makers/{{makerId}}?home={{homeId}}
 
 ### Bulk-delete makers matching a scoped query
-DELETE {{baseUrl}}/makers?createdByUserId={{userId}}&home={{homeId}}
+DELETE {{baseUrl}}/makers?home={{homeId}}

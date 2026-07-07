@@ -36,10 +36,8 @@ const deleteDuty = async (id: string, homeId: string) => {
   return response.data;
 };
 
-const getCategories = async (userId: string, homeId: string) => {
-  const response = await api.get(
-    `/categories?createdByUserId=${userId}&home=${homeId}`
-  );
+const getCategories = async (homeId: string) => {
+  const response = await api.get(`/categories?home=${homeId}`);
   return response.data.data;
 };
 
@@ -50,23 +48,19 @@ const createCategory = async (category: ICategory) => {
 
 const updateCategory = async (category: ICategory, homeId: string) => {
   const response = await api.patch(
-    `/categories/${category._id}?createdByUserId=${category.createdByUserId}&home=${homeId}`,
+    `/categories/${category._id}?home=${homeId}`,
     category
   );
   return response.data.data;
 };
 
-const deleteCategory = async (id: string, userId: string, homeId: string) => {
-  const response = await api.delete(
-    `/categories/${id}?createdByUserId=${userId}&home=${homeId}`
-  );
+const deleteCategory = async (id: string, homeId: string) => {
+  const response = await api.delete(`/categories/${id}?home=${homeId}`);
   return response.data;
 };
 
-const getMakers = async (userId: string, homeId: string) => {
-  const response = await api.get(
-    `/makers?createdByUserId=${userId}&home=${homeId}`
-  );
+const getMakers = async (homeId: string) => {
+  const response = await api.get(`/makers?home=${homeId}`);
   return response.data.data;
 };
 
@@ -77,16 +71,14 @@ const createMaker = async (maker: IMaker) => {
 
 const updateMaker = async (maker: IMaker, homeId: string) => {
   const response = await api.patch(
-    `/makers/${maker._id}?createdByUserId=${maker.createdByUserId}&home=${homeId}`,
+    `/makers/${maker._id}?home=${homeId}`,
     maker
   );
   return response.data.data;
 };
 
-const deleteMaker = async (id: string, userId: string, homeId: string) => {
-  const response = await api.delete(
-    `/makers/${id}?createdByUserId=${userId}&home=${homeId}`
-  );
+const deleteMaker = async (id: string, homeId: string) => {
+  const response = await api.delete(`/makers/${id}?home=${homeId}`);
   return response.data;
 };
 

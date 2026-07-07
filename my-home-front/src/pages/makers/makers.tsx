@@ -28,7 +28,7 @@ export default function Makers() {
 
   const loadMakers = async () => {
     try {
-      const response = await getMakers(userId, defaultHome);
+      const response = await getMakers(defaultHome);
       setMakers(response || []);
     } catch (error) {
       console.log(error);
@@ -53,7 +53,7 @@ export default function Makers() {
   const handleDelete = async (id?: string) => {
     if (!id) return;
     try {
-      await deleteMaker(id, userId, defaultHome);
+      await deleteMaker(id, defaultHome);
       loadMakers();
     } catch (error) {
       console.log(error);

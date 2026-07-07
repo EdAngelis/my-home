@@ -32,7 +32,7 @@ export default function Categories() {
 
   const loadCategories = async () => {
     try {
-      const response = await getCategories(userId, defaultHome);
+      const response = await getCategories(defaultHome);
       setCategories(response || []);
     } catch (error) {
       console.log(error);
@@ -57,7 +57,7 @@ export default function Categories() {
   const handleDelete = async (id?: string) => {
     if (!id) return;
     try {
-      await deleteCategory(id, userId, defaultHome);
+      await deleteCategory(id, defaultHome);
       loadCategories();
     } catch (error) {
       console.log(error);

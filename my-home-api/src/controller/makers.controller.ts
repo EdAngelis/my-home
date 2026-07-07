@@ -12,24 +12,19 @@ import {
 import { Duty } from "../models";
 
 const getScope = (req: Request) => {
-  const { createdByUserId, home } = req.query;
-  if (!createdByUserId || !home) return null;
-  return { createdByUserId, home };
+  const { home } = req.query;
+  if (!home) return null;
+  return { home };
 };
 
 const getMakers = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
-    if (!query.createdByUserId)
-      return response(res, 400, {
-        message: "createdByUserId is required",
-        data: null,
-      });
     if (!query.home)
       return response(res, 400, { message: "home is required", data: null });
 
-    const data = await findMany(query);
+    const data = await findMany({ home: query.home });
     if (!data) return response(res, 404, { message: "Makers not found", data });
 
     return response(res, 200, { message: "All Makers", data });
@@ -44,7 +39,7 @@ const getMaker = async (req: Request, res: Response) => {
     const scope = getScope(req);
     if (!scope)
       return response(res, 400, {
-        message: "createdByUserId and home are required",
+        message: "home is required",
         data: null,
       });
 
@@ -83,13 +78,15 @@ const updateMaker = async (req: Request, res: Response) => {
     const scope = getScope(req);
     if (!scope)
       return response(res, 400, {
-        message: "createdByUserId and home are required",
+        message: "home is required",
         data: null,
       });
 
+    const maker = { ...req.body };
+    delete maker.createdByUserId;
     const data = await updateOne(req.params.id, scope, {
-      ...req.body,
-      ...scope,
+      ...maker,
+      home: scope.home,
     });
 
     if (!data) return response(res, 404, { message: "Maker not found", data });
@@ -106,19 +103,18 @@ const updateMakers = async (req: Request, res: Response) => {
   const toUpdate = req.body;
 
   try {
-    if (!query.createdByUserId)
-      return response(res, 400, {
-        message: "createdByUserId is required",
-        data: null,
-      });
     if (!query.home)
       return response(res, 400, { message: "home is required", data: null });
 
-    const data = await updateMany(query, {
-      ...toUpdate,
-      createdByUserId: query.createdByUserId,
+    const maker = { ...toUpdate };
+    delete maker.createdByUserId;
+    const data = await updateMany(
+      { home: query.home },
+      {
+      ...maker,
       home: query.home,
-    });
+      }
+    );
     if (!data) return response(res, 404, { message: "Makers not found", data });
 
     return response(res, 200, { message: "Makers Updated", data });
@@ -134,7 +130,7 @@ const deleteMaker = async (req: Request, res: Response) => {
     const scope = getScope(req);
     if (!scope)
       return response(res, 400, {
-        message: "createdByUserId and home are required",
+        message: "home is required",
         data: null,
       });
 
@@ -156,15 +152,10 @@ const deleteMakers = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
-    if (!query.createdByUserId)
-      return response(res, 400, {
-        message: "createdByUserId is required",
-        data: null,
-      });
     if (!query.home)
       return response(res, 400, { message: "home is required", data: null });
 
-    const data = await deleteMany(query);
+    const data = await deleteMany({ home: query.home });
     if (!data) return response(res, 404, { message: "Makers not found", data });
 
     return response(res, 200, { message: "Makers Deleted", data });
