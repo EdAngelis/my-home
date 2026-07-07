@@ -1,14 +1,16 @@
 @baseUrl = http://localhost:3000
 @dutyId = REPLACE_WITH_A_DUTY_ID
 @userId = REPLACE_WITH_A_BUYER_ID
+@homeId = REPLACE_WITH_A_HOME_ID
 
-### List duties (scoped per user; query is passed straight to Mongoose find) — GET /duties
-GET {{baseUrl}}/duties?createdByUserId={{userId}}
+### List duties (home is required; query is passed straight to Mongoose find) — GET /duties
+GET {{baseUrl}}/duties?home={{homeId}}
+# &createdByUserId={{userId}}
 # &category=REPLACE_WITH_A_CATEGORY_ID
 # &status=active
 # &makers=REPLACE_WITH_A_MAKER_ID
 
-### Create a new duty — POST /duties/create
+### Create a new duty (home is required) — POST /duties/create
 POST {{baseUrl}}/duties/create
 Content-Type: application/json
 
@@ -20,16 +22,17 @@ Content-Type: application/json
   "description": "Wipe counters and sweep the floor",
   "history": [],
   "createdByUserId": "{{userId}}",
+  "home": "{{homeId}}",
   "category": "REPLACE_WITH_A_CATEGORY_ID",
   "makers": ["REPLACE_WITH_A_MAKER_ID"],
   "status": "active"
 }
 
-### Get a duty by id — GET /duties/:id
-GET {{baseUrl}}/duties/{{dutyId}}
+### Get a duty by id (home is required and must match the duty's home) — GET /duties/:id
+GET {{baseUrl}}/duties/{{dutyId}}?home={{homeId}}
 
-### Update a duty by id (mark done / edit / pause) — PATCH /duties/:id
-PATCH {{baseUrl}}/duties/{{dutyId}}
+### Update a duty by id (mark done / edit / pause; home is required) — PATCH /duties/:id
+PATCH {{baseUrl}}/duties/{{dutyId}}?home={{homeId}}
 Content-Type: application/json
 
 {
@@ -39,16 +42,16 @@ Content-Type: application/json
   "history": [{ "date": "2026-06-30T00:00:00.000Z", "maker": "REPLACE_WITH_A_MAKER_ID" }]
 }
 
-### Bulk-update duties matching a query — PATCH /duties
-PATCH {{baseUrl}}/duties?createdByUserId={{userId}}
+### Bulk-update duties matching a query (home is required) — PATCH /duties
+PATCH {{baseUrl}}/duties?home={{homeId}}
 Content-Type: application/json
 
 {
   "status": "active"
 }
 
-### Delete a duty by id — DELETE /duties/:id
-DELETE {{baseUrl}}/duties/{{dutyId}}
+### Delete a duty by id (home is required and must match the duty's home) — DELETE /duties/:id
+DELETE {{baseUrl}}/duties/{{dutyId}}?home={{homeId}}
 
-### Bulk-delete duties matching a query — DELETE /duties
-DELETE {{baseUrl}}/duties?createdByUserId={{userId}}
+### Bulk-delete duties matching a query (home is required) — DELETE /duties
+DELETE {{baseUrl}}/duties?home={{homeId}}

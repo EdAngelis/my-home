@@ -10,9 +10,9 @@ const findMany = async (query: any) => {
   }
 };
 
-const findOne = async (_id: string) => {
+const findOne = async (_id: string, home: string) => {
   try {
-    const duty = Duty.findById(_id);
+    const duty = Duty.findOne({ _id, home });
     return duty;
   } catch (error) {
     throw error;
@@ -37,9 +37,9 @@ const createMany = async (duties: any[]) => {
   }
 };
 
-const updateOne = async (_id: string, duty: IDuties) => {
+const updateOne = async (_id: string, home: string, duty: IDuties) => {
   try {
-    const newDuty = Duty.findByIdAndUpdate(_id, duty);
+    const newDuty = Duty.findOneAndUpdate({ _id, home }, duty);
     return newDuty;
   } catch (error) {
     throw error;
@@ -55,9 +55,9 @@ const updateMany = async (query: any, toUpdate: IDuties) => {
   }
 };
 
-const deleteOne = async (_id: string) => {
+const deleteOne = async (_id: string, home: string) => {
   try {
-    const response = Duty.findByIdAndDelete(_id);
+    const response = Duty.findOneAndDelete({ _id, home });
     return response;
   } catch (error) {
     throw error;

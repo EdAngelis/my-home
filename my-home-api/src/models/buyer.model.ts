@@ -16,6 +16,7 @@ type Items = {
 
 type Cart = {
   status: string;
+  home?: string;
   items: Items[];
 };
 
@@ -34,6 +35,7 @@ const schema = new Schema({
   defaultHome: { type: String },
   cart: {
     status: { type: String },
+    home: { type: String },
     items: [
       {
         product: {
