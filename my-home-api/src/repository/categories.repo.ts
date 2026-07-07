@@ -10,9 +10,9 @@ const findMany = async (query: any) => {
   }
 };
 
-const findOne = async (_id: string) => {
+const findOne = async (_id: string, query: any) => {
   try {
-    const category = Category.findById(_id);
+    const category = Category.findOne({ _id, ...query });
     return category;
   } catch (error) {
     throw error;
@@ -37,9 +37,9 @@ const createMany = async (categories: any[]) => {
   }
 };
 
-const updateOne = async (_id: string, category: ICategory) => {
+const updateOne = async (_id: string, query: any, category: ICategory) => {
   try {
-    const newCategory = Category.findByIdAndUpdate(_id, category);
+    const newCategory = Category.findOneAndUpdate({ _id, ...query }, category);
     return newCategory;
   } catch (error) {
     throw error;
@@ -55,9 +55,9 @@ const updateMany = async (query: any, toUpdate: ICategory) => {
   }
 };
 
-const deleteOne = async (_id: string) => {
+const deleteOne = async (_id: string, query: any) => {
   try {
-    const response = Category.findByIdAndDelete(_id);
+    const response = Category.findOneAndDelete({ _id, ...query });
     return response;
   } catch (error) {
     throw error;

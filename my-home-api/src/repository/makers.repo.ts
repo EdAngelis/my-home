@@ -10,9 +10,9 @@ const findMany = async (query: any) => {
   }
 };
 
-const findOne = async (_id: string) => {
+const findOne = async (_id: string, query: any) => {
   try {
-    const maker = Maker.findById(_id);
+    const maker = Maker.findOne({ _id, ...query });
     return maker;
   } catch (error) {
     throw error;
@@ -37,9 +37,9 @@ const createMany = async (makers: any[]) => {
   }
 };
 
-const updateOne = async (_id: string, maker: IMaker) => {
+const updateOne = async (_id: string, query: any, maker: IMaker) => {
   try {
-    const newMaker = Maker.findByIdAndUpdate(_id, maker);
+    const newMaker = Maker.findOneAndUpdate({ _id, ...query }, maker);
     return newMaker;
   } catch (error) {
     throw error;
@@ -55,9 +55,9 @@ const updateMany = async (query: any, toUpdate: IMaker) => {
   }
 };
 
-const deleteOne = async (_id: string) => {
+const deleteOne = async (_id: string, query: any) => {
   try {
-    const response = Maker.findByIdAndDelete(_id);
+    const response = Maker.findOneAndDelete({ _id, ...query });
     return response;
   } catch (error) {
     throw error;

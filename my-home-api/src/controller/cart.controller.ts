@@ -27,7 +27,7 @@ const addItem = async (req: Request, res: Response) => {
     }
 
     const result = await pushItem(id, homeId as string, data);
-    if (!result)
+    if (!result || result.matchedCount === 0)
       return response(res, 400, {
         message: "Failed to add item to cart",
         data: result,
@@ -35,7 +35,6 @@ const addItem = async (req: Request, res: Response) => {
 
     return response(res, 200, { message: "Items added", data: result });
   } catch (error) {
-    throw error;
     return response(res, 500, {
       message: "Internal server error",
       data: error,
@@ -45,11 +44,15 @@ const addItem = async (req: Request, res: Response) => {
 
 const removeItem = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { homeId } = req.query;
   try {
     const { productIds } = req.body;
 
-    const data = await pullItem(id, productIds);
-    if (!data)
+    if (!homeId)
+      return response(res, 400, { message: "homeId is required", data: null });
+
+    const data = await pullItem(id, homeId as string, productIds);
+    if (!data || data.matchedCount === 0)
       return response(res, 400, {
         message: "Failed to remove item to cart",
         data,
@@ -66,12 +69,18 @@ const removeItem = async (req: Request, res: Response) => {
 
 const sendOrder = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { homeId } = req.query;
   try {
+    if (!homeId)
+      return response(res, 400, { message: "homeId is required", data: null });
+
     const buyer = await findOne(id);
     if (!buyer)
       return response(res, 404, { message: "Buyer not found", data: null });
 
     const { cart } = buyer as IBuyer;
+    if (cart?.home !== homeId)
+      return response(res, 404, { message: "Cart not found", data: null });
 
     let order: WhatsMessageType = {
       total: 0,

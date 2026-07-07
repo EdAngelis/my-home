@@ -50,7 +50,7 @@ export default function Products() {
   };
 
   const loadBuyer = async () => {
-    const response = await getBuyer(userId);
+    const response = await getBuyer(userId, defaultHome);
     const qtItems = response?.cart?.items?.length || 0;
     setQtItemCart(qtItems);
     await setBuyer(response);
@@ -69,7 +69,7 @@ export default function Products() {
       buyer.cart.items.push({ product, qt: 1 });
 
       try {
-        const resp = await updateCart(buyer);
+        const resp = await updateCart(buyer, defaultHome);
         const qtItems = resp.cart?.items?.length || 0;
         setQtItemCart(qtItems);
         await setBuyer(resp);

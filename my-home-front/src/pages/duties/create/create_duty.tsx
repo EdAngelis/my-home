@@ -62,8 +62,8 @@ export default function CreateDuty() {
   const loadOptions = async () => {
     try {
       const [cats, mkrs] = await Promise.all([
-        getCategories(userId),
-        getMakers(userId),
+        getCategories(defaultHome),
+        getMakers(defaultHome),
       ]);
       setCategories(cats || []);
       setMakers(mkrs || []);

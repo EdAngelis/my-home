@@ -11,11 +11,20 @@ import {
 } from "../repository/makers.repo";
 import { Duty } from "../models";
 
+const getScope = (req: Request) => {
+  const { home } = req.query;
+  if (!home) return null;
+  return { home };
+};
+
 const getMakers = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
-    const data = await findMany(query);
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await findMany({ home: query.home });
     if (!data) return response(res, 404, { message: "Makers not found", data });
 
     return response(res, 200, { message: "All Makers", data });
@@ -27,7 +36,14 @@ const getMakers = async (req: Request, res: Response) => {
 
 const getMaker = async (req: Request, res: Response) => {
   try {
-    const data = await findOne(req.params.id);
+    const scope = getScope(req);
+    if (!scope)
+      return response(res, 400, {
+        message: "home is required",
+        data: null,
+      });
+
+    const data = await findOne(req.params.id, scope);
 
     if (!data) return response(res, 404, { message: "Maker not found", data });
 
@@ -40,6 +56,14 @@ const getMaker = async (req: Request, res: Response) => {
 
 const createMaker = async (req: Request, res: Response) => {
   try {
+    if (!req.body.createdByUserId)
+      return response(res, 400, {
+        message: "createdByUserId is required",
+        data: null,
+      });
+    if (!req.body.home)
+      return response(res, 400, { message: "home is required", data: null });
+
     const data = await create(req.body);
 
     return response(res, 200, { message: "Maker created", data });
@@ -51,7 +75,19 @@ const createMaker = async (req: Request, res: Response) => {
 
 const updateMaker = async (req: Request, res: Response) => {
   try {
-    const data = await updateOne(req.params.id, req.body);
+    const scope = getScope(req);
+    if (!scope)
+      return response(res, 400, {
+        message: "home is required",
+        data: null,
+      });
+
+    const maker = { ...req.body };
+    delete maker.createdByUserId;
+    const data = await updateOne(req.params.id, scope, {
+      ...maker,
+      home: scope.home,
+    });
 
     if (!data) return response(res, 404, { message: "Maker not found", data });
 
@@ -67,7 +103,18 @@ const updateMakers = async (req: Request, res: Response) => {
   const toUpdate = req.body;
 
   try {
-    const data = await updateMany(query, toUpdate);
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const maker = { ...toUpdate };
+    delete maker.createdByUserId;
+    const data = await updateMany(
+      { home: query.home },
+      {
+      ...maker,
+      home: query.home,
+      }
+    );
     if (!data) return response(res, 404, { message: "Makers not found", data });
 
     return response(res, 200, { message: "Makers Updated", data });
@@ -80,12 +127,19 @@ const updateMakers = async (req: Request, res: Response) => {
 const deleteMaker = async (req: Request, res: Response) => {
   const _id = req.params.id;
   try {
-    const data = await deleteOne(_id);
+    const scope = getScope(req);
+    if (!scope)
+      return response(res, 400, {
+        message: "home is required",
+        data: null,
+      });
+
+    const data = await deleteOne(_id, scope);
 
     if (!data) return response(res, 404, { message: "Maker not found", data });
 
     // Cascade: pull this maker's id from every duty's makers array.
-    await Duty.updateMany({ makers: _id }, { $pull: { makers: _id } });
+    await Duty.updateMany({ makers: _id, ...scope }, { $pull: { makers: _id } });
 
     return response(res, 200, { message: "Maker deleted", data });
   } catch (error) {
@@ -98,7 +152,10 @@ const deleteMakers = async (req: Request, res: Response) => {
   const query = req.query;
 
   try {
-    const data = await deleteMany(query);
+    if (!query.home)
+      return response(res, 400, { message: "home is required", data: null });
+
+    const data = await deleteMany({ home: query.home });
     if (!data) return response(res, 404, { message: "Makers not found", data });
 
     return response(res, 200, { message: "Makers Deleted", data });

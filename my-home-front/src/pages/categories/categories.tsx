@@ -12,7 +12,7 @@ import styles from "./categories.module.css";
 
 export default function Categories() {
   const navigate = useNavigate();
-  const { userId } = useContext(AppContext);
+  const { userId, defaultHome, homeLoading } = useContext(AppContext);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [name, setName] = useState<string>("");
 
@@ -21,12 +21,18 @@ export default function Categories() {
       navigate("/");
       return;
     }
+    if (homeLoading) return;
+    if (defaultHome === "") {
+      navigate("/enter-home");
+      return;
+    }
     loadCategories();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, defaultHome, homeLoading]);
 
   const loadCategories = async () => {
     try {
-      const response = await getCategories(userId);
+      const response = await getCategories(defaultHome);
       setCategories(response || []);
     } catch (error) {
       console.log(error);
@@ -36,7 +42,11 @@ export default function Categories() {
   const handleAdd = async () => {
     if (!name.trim()) return;
     try {
-      await createCategory({ name: name.trim(), createdByUserId: userId });
+      await createCategory({
+        name: name.trim(),
+        createdByUserId: userId,
+        home: defaultHome,
+      });
       setName("");
       loadCategories();
     } catch (error) {
@@ -47,7 +57,7 @@ export default function Categories() {
   const handleDelete = async (id?: string) => {
     if (!id) return;
     try {
-      await deleteCategory(id);
+      await deleteCategory(id, defaultHome);
       loadCategories();
     } catch (error) {
       console.log(error);
