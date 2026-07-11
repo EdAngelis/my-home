@@ -1,7 +1,7 @@
 import api from "./service/api";
 import IBuyer from "./models/buyer.model";
 import IDuties from "./models/duties.model";
-import IProduct from "./models/products.model";
+import IProduct, { ProductSearchPage } from "./models/products.model";
 import ICategory from "./models/category.model";
 import IMaker from "./models/maker.model";
 import IHome from "./models/home.model";
@@ -148,6 +148,20 @@ const updateProduct = async (
   return response.data.data;
 };
 
+const searchWebProducts = async (
+  name: string,
+  badge: string,
+  size: string,
+  page: number
+): Promise<ProductSearchPage> => {
+  const response = await api.get(
+    `/search/products?q=${encodeURIComponent(name)}&brand=${encodeURIComponent(
+      badge
+    )}&size=${encodeURIComponent(size)}&page=${page}&limit=10`
+  );
+  return response.data.data;
+};
+
 const listHomes = async (userId: string): Promise<IHome[]> => {
   const response = await api.get(`/homes?userId=${userId}`);
   return response.data.data;
@@ -206,6 +220,7 @@ export {
   createBuyer,
   getBuyerByCpf,
   updateProduct,
+  searchWebProducts,
   listHomes,
   createHome,
   joinHome,

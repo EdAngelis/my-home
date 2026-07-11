@@ -111,9 +111,21 @@ Known issues (do not treat as reference behavior — see `CLAUDE.md` "What NOT t
 | DELETE | `/makers/:id` | Delete a maker by id. **Cascades**: pulls its id from every duty's `makers` array (`Duty.updateMany({ makers: id }, { $pull: { makers: id } })`). |
 | DELETE | `/makers` | Bulk-delete makers matching a query. |
 
+### Search — `src/routes/search.routes.ts` / `src/controller/search.controller.ts`
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/search/products` | Search the web for products via SerpAPI's Google Shopping engine (Brazilian Google, prices in BRL). Query params: `q` (product name, required), `brand` (optional), `size` (optional), `page` (default `1`), `limit` (default `10`, max `50`). |
+
+Details:
+- Returns `data` shaped as `{ results: { name, price, image, badge?, size?, unit?, category? }[], page: number, hasMore: boolean }`. `price` is a number (BRL), `image` is a thumbnail URL.
+- Requires the `SEARCH_API_KEY` environment variable (a [SerpAPI](https://serpapi.com) API key — the free tier allows 100 searches/month). Without it the route returns `503` with `message: "Search is not configured (missing SEARCH_API_KEY)"`.
+- `400` when `q` is missing; `500` with `{ message: "Error" }` when the provider call fails.
+- Paging is done server-side by slicing the provider's single result set, so each `page` request costs one SerpAPI search.
+
 ## External / backend endpoints consumed
 
-`my-home-api` does not call any other backend service.
+`my-home-api` calls one external service: SerpAPI (`https://serpapi.com/search.json`, `engine=google_shopping`) from `src/repository/search.repo.ts`, to back `GET /search/products`. The key is read from `SEARCH_API_KEY`; no other backend service is called.
 
 `my-home-front` calls only `my-home-api` over HTTP for data. The one external integration is client-side, not an API call: `app.service.ts`'s `sendWhatsapp()` opens `https://api.whatsapp.com/send?phone={marketPhone}&text={message}` in a new browser tab to hand off the formatted shopping list to WhatsApp; this is a navigation, not a fetch/axios request, and expects no response.
 
