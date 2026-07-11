@@ -59,7 +59,8 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --resolve-s3 \
             --parameter-overrides \
-              "DbUri=${{ secrets.DB_URI }}"
+              "DbUri=${{ secrets.DB_URI }}" \
+              "SearchApiKey=${{ secrets.SEARCH_API_KEY }}"
 
       - name: Read staging API URL
         id: url

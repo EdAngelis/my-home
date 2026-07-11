@@ -7,6 +7,11 @@ Parameters:
     Type: String
     Description: MongoDB connection string
     NoEcho: true
+  SearchApiKey:
+    Type: String
+    Description: SerpAPI key for the product web-search endpoint
+    NoEcho: true
+    Default: ""
 
 Globals:
   Function:
@@ -17,6 +22,7 @@ Globals:
         NODE_ENV: production
         SERVERLESS: "true"
         DB_URI: !Ref DbUri
+        SEARCH_API_KEY: !Ref SearchApiKey
 
 Resources:
   ApiFunction:
