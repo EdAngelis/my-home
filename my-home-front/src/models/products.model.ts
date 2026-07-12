@@ -16,4 +16,20 @@ interface IProducts {
   updatedAt: Date;
 }
 
+export interface ProductSearchResult {
+  name: string;
+  price: number;
+  image: string;
+  badge?: string;
+  size?: string;
+  unit?: string;
+  category?: string;
+}
+
+export interface ProductSearchPage {
+  results: ProductSearchResult[];
+  page: number;
+  hasMore: boolean;
+}
+
 export default IProducts;
