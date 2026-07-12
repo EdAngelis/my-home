@@ -113,6 +113,9 @@ export default function Products() {
   const handleFilter = (event: any) => {
     const value = event.target.value;
     setFilterText(value);
+    if (webOpen) {
+      hCloseWeb();
+    }
     const temp = products.filter((product) =>
       product.name.toLowerCase().includes(value.toLowerCase())
     );
@@ -209,6 +212,7 @@ export default function Products() {
       }
       setAlertOn(true);
       loadProducts();
+      hCloseWeb();
     } catch (error) {
       console.log(error);
       setWebAddError("Could not create the product. Try again.");
@@ -221,12 +225,6 @@ export default function Products() {
     <>
       <Alert alertOn={alertOn} setAlertOn={setAlertOn} />
       <div className={styles.container}>
-        <div className={styles.top}>
-          <button onClick={() => goTo("/create-product", null)}>
-            NEW PRODUCT
-          </button>
-        </div>
-
         <div className={styles.filter}>
           <input
             placeholder="FILTER PRODUCTS"
