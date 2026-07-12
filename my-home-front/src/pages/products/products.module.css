@@ -22,7 +22,10 @@
 }
 
 .filter {
+  display: flex;
   justify-self: center;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 10px;
   outline: none;
 }
@@ -39,6 +42,22 @@
 .filter input::placeholder{
   color: #FF9A62;
   font-family: 'Roboto', sans-serif;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.addError {
+  margin: 10px;
+  text-align: center;
+  color: #c15111;
 }
 
 .row { 
