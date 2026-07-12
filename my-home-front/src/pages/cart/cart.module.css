@@ -11,7 +11,7 @@
 
 .rowCart {
   display: grid;
-  grid-template-columns: 3fr 2fr 1fr 1fr 1fr;
+  grid-template-columns: 3fr 1.5fr 2fr 1fr 1fr;
   background-color: #fff;
   align-items: center;
   gap: 10px;
@@ -60,6 +60,10 @@
 
 .rowCart span {
   color: #00641C;
+}
+
+.price {
+  font-weight: 500;
 }
 
 .productName {
