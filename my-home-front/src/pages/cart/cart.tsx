@@ -5,6 +5,7 @@ import IProducts from "../../models/products.model";
 import { dim, plus } from "../../assets/icons/icons";
 import { AppContext } from "../../context";
 import styles from "./cart.module.css";
+import { formatPrice } from "../../components/formatters/prices";
 
 import { getBuyer, updateCart, sendWhatsapp } from "../../app.service";
 import InputButton from "../../components/input-button/input-button";
@@ -138,6 +139,9 @@ export default function Cart() {
                     onClick={() => goTo("/create-product", item.product)}
                   >
                     {item?.product?.name ?? "-"}
+                  </span>
+                  <span className={styles.price}>
+                    {formatPrice(item.product.price)}
                   </span>
                   <div
                     onClick={() => editQuantity(item.product, -1)}
