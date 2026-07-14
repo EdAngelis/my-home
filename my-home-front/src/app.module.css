@@ -2,3 +2,15 @@
     max-width: 500px;
     margin: 0 auto;
 }
+
+@media (min-width: 601px) {
+    .container {
+        max-width: 700px;
+    }
+}
+
+@media (min-width: 901px) {
+    .container {
+        max-width: 960px;
+    }
+}
