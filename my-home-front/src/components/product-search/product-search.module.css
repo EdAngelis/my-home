@@ -21,10 +21,22 @@
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: 1fr;
   gap: 15px;
   width: 100%;
-  max-width: 500px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 601px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 901px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .card {
@@ -33,6 +45,7 @@
   justify-items: center;
   gap: 8px;
   padding: 10px;
+  min-width: 0;
   border: 1px solid #f9ab84;
   border-radius: 5px;
 }
