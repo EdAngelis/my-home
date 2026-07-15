@@ -88,8 +88,6 @@ export default function Home() {
               <div className={styles.error}>
                 {error && <p>Invalid email or CPF</p>}
               </div>
-
-              <span>If no account exists, a new one will be created</span>
             </div>
           )}
         </div>
