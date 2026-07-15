@@ -39,6 +39,9 @@ export default function Products() {
   const [webSearchError, setWebSearchError] = useState("");
   const [webAddError, setWebAddError] = useState("");
   const [webAddingIndex, setWebAddingIndex] = useState<number | null>(null);
+  const [webAddedIndices, setWebAddedIndices] = useState<Set<number>>(
+    new Set()
+  );
 
   const { userId, defaultHome, homeLoading, setQtItemCart } =
     useContext(AppContext);
@@ -153,6 +156,7 @@ export default function Products() {
       setWebHasMore(data.hasMore);
       setWebPage(1);
       setWebSearched(true);
+      setWebAddedIndices(new Set());
     } catch (error) {
       console.log(error);
       setWebSearched(false);
@@ -169,6 +173,7 @@ export default function Products() {
     setWebSearched(false);
     setWebSearchError("");
     setWebAddError("");
+    setWebAddedIndices(new Set());
   };
 
   const hShowMoreWeb = async () => {
@@ -212,7 +217,7 @@ export default function Products() {
       }
       setAlertOn(true);
       loadProducts();
-      hCloseWeb();
+      setWebAddedIndices((prev) => new Set(prev).add(index));
     } catch (error) {
       console.log(error);
       setWebAddError("Could not create the product. Try again.");
@@ -256,6 +261,7 @@ export default function Products() {
               hasMore={webHasMore}
               error={webSearchError}
               addingIndex={webAddingIndex}
+              addedIndices={webAddedIndices}
               addLabel="Add to cart"
               onAdd={hAddWeb}
               onShowMore={hShowMoreWeb}
