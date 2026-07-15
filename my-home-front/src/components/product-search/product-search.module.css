@@ -104,6 +104,15 @@
   cursor: default;
 }
 
+.added {
+  border-color: #00641c;
+}
+
+.added .addButton {
+  background-color: #00641c;
+  color: #d1ffcd;
+}
+
 .showMore {
   border: none;
   width: 140px;
