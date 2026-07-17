@@ -269,30 +269,32 @@ export default function Products() {
           </>
         ) : (
           <div className={styles.grid}>
-            {filteredProducts
-              .filter((product) => !isInCart(product))
-              .map((product, index) => (
-                <div className={styles.row} key={index}>
-                  <div className={styles.trashIconDiv}>
-                    <div onClick={() => deleteProd(product._id)}>
-                      <TrashIcon color1="#00641C" color2="#D1FFCD" />
-                    </div>
-                  </div>
-                  <div
-                    onClick={() => goTo("/create-product", product)}
-                    className={styles.cardProduct}
-                  >
-                    <span className={styles.product}>{product.name}</span>
-                    <span className={styles.badge}>{product.badge}</span>
-                    <span className={styles.price}>
-                      {formatPrice(product.price)}
-                    </span>
-                  </div>
-                  <div onClick={() => addItemToCart(product)}>
-                    <CartIcon color1="#FF9A62" color2="#D1FFCD" />
+            {filteredProducts.map((product, index) => (
+              <div className={styles.row} key={index}>
+                <div className={styles.trashIconDiv}>
+                  <div onClick={() => deleteProd(product._id)}>
+                    <TrashIcon color1="#00641C" color2="#D1FFCD" />
                   </div>
                 </div>
-              ))}
+                <div
+                  onClick={() => goTo("/create-product", product)}
+                  className={
+                    isInCart(product)
+                      ? `${styles.cardProduct} ${styles.inCart}`
+                      : styles.cardProduct
+                  }
+                >
+                  <span className={styles.product}>{product.name}</span>
+                  <span className={styles.badge}>{product.badge}</span>
+                  <span className={styles.price}>
+                    {formatPrice(product.price)}
+                  </span>
+                </div>
+                <div onClick={() => addItemToCart(product)}>
+                  <CartIcon color1="#FF9A62" color2="#D1FFCD" />
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
