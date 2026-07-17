@@ -82,6 +82,10 @@
   min-width: 0;
   cursor: pointer;
 }
+
+.inCart {
+  background-color: #D1FFCD;
+}
 .cartIcon {
   max-width: 30px;
 }
